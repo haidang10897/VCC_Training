@@ -10,3 +10,6 @@
 [7. Understand cat, join, paste command](Docs/I.%20Working_On_The_Command_Line/7.%20Understand%20cat,%20join,%20paste%20command.md)  
 [8. Use tac, sort, split, uniq, nl](Docs/I.%20Working_On_The_Command_Line/8.%20Use%20tac,%20sort,%20split,%20uniq,%20nl.md)  
 [9. File Viewing Commands_head, tail, less, cut, wc](Docs/I.%20Working_On_The_Command_Line/9.%20File%20Viewing%20Commands_head,%20tail,%20less,%20cut,%20wc.md)  
+[10. Using grep, sed, awk](Docs/I.%20Working_On_The_Command_Line/10.%20Using%20grep,%20sed,%20awk.md)  
+[11. Vi editor](Docs/I.%20Working_On_The_Command_Line/11.%20Vi%20editor.md)  
+[12. Byoubu](Docs/I.%20Working_On_The_Command_Line/12.%20Byoubu.md)  
