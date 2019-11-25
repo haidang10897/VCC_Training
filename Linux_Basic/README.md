@@ -1,4 +1,4 @@
-# Danh sách bài Linux
+﻿# Danh sách bài Linux
 ## I. Working On The Command Line  
 
 [1. Understand how to use a Linux shell](Docs/I.%20Working_On_The_Command_Line/1.%20Understand%20how%20to%20use%20a%20Linux%20shell.md)  
@@ -13,3 +13,15 @@
 [10. Using grep, sed, awk](Docs/I.%20Working_On_The_Command_Line/10.%20Using%20grep,%20sed,%20awk.md)  
 [11. Vi editor](Docs/I.%20Working_On_The_Command_Line/11.%20Vi%20editor.md)  
 [12. Byoubu](Docs/I.%20Working_On_The_Command_Line/12.%20Byoubu.md)  
+
+## II. Manage processes
+[1. Command ps, top, htop](Docs/II.%20Manage_processes/1.%20Command%20ps,%20top,%20htop.md)  
+[2. Foreground and Background Processes](Docs/II.%20Manage_processes/2.%20Foreground%20and%20Background%20Processes.md)  
+[3. Killing Processes](Docs/II.%20Manage_processes/3.%20Killing%20Processes.md)  
+
+## III. Manage software
+[1. Install software from source](Docs/III.%20Manage_software/1.%20Install%20software%20from%20source.md)  
+[2. Using Debian Packages](Docs/III.%20Manage_software/2.%20Using%20Debian%20Packages.md)  
+[3. Using Redhat Packages](Docs/III.%20Manage_software/3.%20Using%20Redhat%20Packages.md)  
+
+## IV. Managing Files and Filesystems
