@@ -41,8 +41,8 @@
 [11. Tools for Locating Files](Docs/IV.%20Managing%20Files%20and%20Filesystems/11.%20Tools%20for%20Locating%20Files.md)  
 
 ## V. The Boot Process
-[1. Understanding the Boot Process](Docs/V.%20The Boot%20Process/1.%20Understanding%20the%20Boot%20Process.md)  
-[2. Runlevels and the Initialization](Docs/V.%20The Boot%20Process/2.%20Runlevels%20and%20the%20Initialization.md)  
+[1. Understanding the Boot Process](Docs/V.%20The%20Boot%20Process/1.%20Understanding%20the%20Boot%20Process.md)  
+[2. Runlevels and the Initialization](Docs/V.%20The%20Boot%20Process/2.%20Runlevels%20and%20the%20Initialization.md)  
 
 ## VI. Administering the System
 [1. Understanding the Boot Process](Docs/VI.%20Administering%20the%20System/1.%20Managing%20Users%20and%20Groups.md)  
