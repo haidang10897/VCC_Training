@@ -36,7 +36,16 @@
 [6.4. Understanding LVM](Docs/IV.%20Managing%20Files%20and%20Filesystems/6.4.%20Understanding%20LVM.md)  
 [7. Understanding Filesystem Hierarchy Standard](Docs/IV.%20Managing%20Files%20and%20Filesystems/7.%20Understanding%20Filesystem%20Hierarchy%20Standard.md)  
 [8. Managing Files and Link](Docs/IV.%20Managing%20Files%20and%20Filesystems/8.%20Managing%20Files%20and%20Link.md)  
+[9. Managing File Ownership](Docs/IV.%20Managing%20Files%20and%20Filesystems/9.%20Managing%20File%20Ownership.md)  
+[10. Controlling Access to Files](Docs/IV.%20Managing%20Files%20and%20Filesystems/10.%20Controlling%20Access%20to%20Files.md)  
+[11. Tools for Locating Files](Docs/IV.%20Managing%20Files%20and%20Filesystems/11.%20Tools%20for%20Locating%20Files.md)  
 
+## V. The Boot Process
+[1. Understanding the Boot Process](Docs/V.%20The Boot%20Process/1.%20Understanding%20the%20Boot%20Process.md)  
+[2. Runlevels and the Initialization](Docs/V.%20The Boot%20Process/2.%20Runlevels%20and%20the%20Initialization.md)  
 
+## VI. Administering the System
+[1. Understanding the Boot Process](Docs/VI.%20Administering%20the%20System/1.%20Managing%20Users%20and%20Groups.md)  
+[2. Using System Log Files](Docs/VI.%20Administering%20the%20System/2.%20Using%20System%20Log%20Files.md)  
 
 
