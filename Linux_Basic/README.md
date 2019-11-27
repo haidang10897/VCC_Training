@@ -47,5 +47,10 @@
 ## VI. Administering the System
 [1. Understanding the Boot Process](Docs/VI.%20Administering%20the%20System/1.%20Managing%20Users%20and%20Groups.md)  
 [2. Using System Log Files](Docs/VI.%20Administering%20the%20System/2.%20Using%20System%20Log%20Files.md)  
+[3. Running Job in the Future](Docs/VI.%20Administering%20the%20System/3.%20Running%20Job%20in%20the%20Future.md)  
+[4.1. Backup System Rsnapshot](Docs/VI.%20Administering%20the%20System/4.1.%20Backup%20System%20Rsnapshot.md)  
+[4.2. Backup System tar](Docs/VI.%20Administering%20the%20System/4.2.%20Backup%20System%20tar.md)  
+[4.3. Backup System dd](Docs/VI.%20Administering%20the%20System/4.3.%20Backup%20System%20dd.md)  
+[4.4. Backup System rsync](Docs/VI.%20Administering%20the%20System/4.4.%20Backup%20System%20rsync.md)  
 
-
+## VII. Networking Basic
