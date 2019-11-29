@@ -54,3 +54,9 @@
 [4.4. Backup System rsync](Docs/VI.%20Administering%20the%20System/4.4.%20Backup%20System%20rsync.md)  
 
 ## VII. Networking Basic
+[1. Set static IP, DNS, GATEWAY](Docs/VII.%20Networking%20Basic/1.%20Set%20static%20IP,%20DNS,%20GATEWAY.md)  
+[2. DNS system](Docs/VII.%20Networking%20Basic/2.%20DNS%20system.md)  
+[3. Understanding DHCP](Docs/VII.%20Networking%20Basic/3.%20Understanding%20DHCP.md)  
+[4. Understanding VPN](Docs/VII.%20Networking%20Basic/4.%20Understanding%20VPN.md)  
+
+
