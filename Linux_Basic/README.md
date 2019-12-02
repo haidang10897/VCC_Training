@@ -58,5 +58,14 @@
 [2. DNS system](Docs/VII.%20Networking%20Basic/2.%20DNS%20system.md)  
 [3. Understanding DHCP](Docs/VII.%20Networking%20Basic/3.%20Understanding%20DHCP.md)  
 [4. Understanding VPN](Docs/VII.%20Networking%20Basic/4.%20Understanding%20VPN.md)  
+[5. Config Routing Basic on Linux](Docs/VII.%20Networking%20Basic/5.%20Config%20Routing%20Basic%20on%20Linux.md)  
+[6. SSH Basic](Docs/VII.%20Networking%20Basic/6.%20SSH%20Basic.md)  
+[7. IP tables](Docs/VII.%20Networking%20Basic/7.%20IP%20tables.md)  
 
+## VIII. Deploy Service 
+WIP...
+
+## IX. Bash script
+[Bài 1. CIDR to IP list](../Baitap/Bai%201.%20CIDR%20to%20IP%20list)  
+[Bài 2. Manage task](../Baitap/Bai%202.%20Manage%20task)  
 
