@@ -3,12 +3,12 @@
 # 1. YAML
 
 Chúng ta hãy xem các tập tin YAML là gì. Hầu như tất cả playbooks trong Ansible được viết bằng YAML. Nếu bạn đã quen thuộc với YAML, hãy bỏ qua phần này và chuyển sang phần tiếp theo. Nếu bạn chưa từng làm việc với YAML thì khuyên bạn nên xem phần này kỹ một xíu bởi vì các phần còn lại hầu như phụ thuộc hoàn toàn vào YAML.  Playbook Ansible được viết theo định dạng cụ thể được gọi là YAML.  Nếu bạn đã làm việc với các định dạng cấu trúc dữ liệu khác như XML hoặc JSON, bạn sẽ có thể dễ dàng học nó.  Cũng đừng lo lắng nếu bạn chưa biết gì, vì nó thật sự rất đơn giản. File YAML được dùng để thể hiện dữ liệu. Dưới đây là so sánh nhanh dữ liệu mẫu ở ba định dạng khác nhau.  
-<img src = "../Images/II. Tổng quan các thành phần của Ansible/Anh_1.png">  
+<img src = "../Images/II. Tong quan cac thanh phan cua Ansible/Anh_1.png">  
 
 Bên trái là dạng XML - hiển thị danh sách các máy chủ và thông tin của chúng. Cùng dữ liệu đó thì hình ở giữa được thể hiện dạng JSON và cuối cùng ở định dạng YAML ở bên phải.  
   
 Trong YAML có 3 kiểu để biểu diễn giá trị.  
-<img src = "../Images/II. Tổng quan các thành phần của Ansible/Anh_2.png">  
+<img src = "../Images/II. Tong quan cac thanh phan cua Ansible/Anh_2.png">  
 
 ### Key Value Pair (Cặp khoá vs giá trị):  
 Dữ liệu được thể hiện bởi kiểu khoá và giá trị (key và value). Trong YAML, khóa và giá trị được phân tách bằng dấu hai chấm (:). Luôn phải có khoảng trắng theo sau dấu hai chấm.  
@@ -325,5 +325,5 @@ Ví dụ bạn có một kịch bản như bên dưới:
   
 Mục tiêu của file playbook setup_application.yml này là cấu hình tường lửa cho group server về web. Bây giờ chúng ta sẽ cắt nhỏ file playbook này ra thành những file có chức năng riêng biệt như file chỉ chưa định nghĩa biến, hay file chứa định nghĩa tasks. Trước khi cắt file playbook nhỏ gọn lại, ta cần tạo cấu trúc thư mục như sau để ansible nhận biết được các thành phần ta đã khai báo.
 
-<img src = "../Images/II. Tổng quan các thành phần của Ansible/Anh_3.png">  
+<img src = "../Images/II. Tong quan cac thanh phan cua Ansible/Anh_3.png">  
 

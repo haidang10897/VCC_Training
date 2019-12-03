@@ -15,7 +15,7 @@ _**Ansible**_ _đang là công cụ_ _Configuration Management_ _khá nổi bậ
 -   Cú pháp dễ đọc, dễ học, dễ hiểu
 
 ##  Kiến trúc
-<img src = "../Images/I. Tổng quan về Ansible/Anh_1.png">  
+<img src = "../Images/I. Tong quan ve Ansible/Anh_1.png">  
 
 Ansible sử dụng kiến trúc agentless để giao tiếp với các máy khác mà không cần agent. Cơ bản nhất là giao tiếp thông qua giao thức SSH trên Linux, WinRM trên Windows hoặc giao tiếp qua chính API của thiết bị đó cung cấp.  
 Ansible có thể giao tiếp với rất nhiều platform, OS và loại thiết bị khác nhau. Từ Ubuntu, CentOS, VMware, Windows cho tới AWS, Azure, các thiết bị mạng Cisco và Juniper.  
