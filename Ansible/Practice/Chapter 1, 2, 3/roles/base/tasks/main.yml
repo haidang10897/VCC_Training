@@ -1,0 +1,20 @@
+# base task co ban
+
+- name: tao devops group
+  group:
+     name: devops
+     state: present
+
+- name: tao devops user
+  user:
+    name: devops
+    comment: "Devops User"
+    uid: 2001
+    group: devops
+
+- name: cai htop package
+  action: apt
+     name: htop
+     state: present
+     update_cache: yes
+
