@@ -6,11 +6,14 @@
 [V.1. Roles](./Docs/V.1.%20Roles.md)  
 [V.2. Security management](./Docs/V.2.%20Security%20management.md)  
 [V. Handling complex deployment](./Docs/V.%20Handling%20complex%20deployment.md)  
+[Practice](./Docs/Practice.md)  
 
 # Practice Code
+
 [Code](./Practice)
 
 # Tài liệu tham khảo
+
 https://tech.bizflycloud.vn/ansible-phan-1-cai-dat-va-cau-hinh-412.htm
 
 https://cloudcraft.info/ansible-huong-dan-su-dung-va-quan-ly-role-trong-ansible/
@@ -19,4 +22,5 @@ https://cloudcraft.info/ansible-huong-dan-su-dung-va-quan-ly-role-trong-ansible/
 [Ansible Playbook Essentials](./Reference/Ansible%20Playbook%20Essentials.pdf)  
 
 **Chủ yếu tài liệu tham khảo sẽ được tóm tắt và dịch ở trong cuốn Learning Ansible 2**  
-**Phần thực hành được học và lấy từ cuốn Ansible Playbook Essential**
+
+**Phần thực hành được học và lấy từ cuốn Ansible Playbook Essential**  
