@@ -7,5 +7,6 @@
     - shell: echo 'Bat dau config web server'
   roles:
     - nginx
+    - wordpress
   post_tasks:
     - shell: echo 'Ket thuc config web server'

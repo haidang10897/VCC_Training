@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Tran Hai Dang
+  description: MySQL Database Role
+  company: VCC
+  min_ansible_version: 1.4
+  platforms:
+  - name: EL
+    versions:
+      - all
+  - name: Ubuntu
+    versions:
+      - all
+ categories:
+ - database: sql
