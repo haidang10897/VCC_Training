@@ -1,8 +1,0 @@
----
-# Playbook cho database server
-# filename: db.yml
-- hosts: all
-  remote_user: ansible
-  become: yes
-  roles:
-          - { role: mysql, mysql_bind: "{{ ansible_eth1.ipv4.address  }}"  }

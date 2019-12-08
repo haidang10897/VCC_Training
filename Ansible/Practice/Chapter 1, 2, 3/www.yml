@@ -1,8 +1,8 @@
 # www.yml : playbook cho web server
 --- 
-- hosts: www
+- hosts: all
   remote_user: ansible
-  sudo: yes
+  become: yes
   pre_tasks:
     - shell: echo 'Bat dau config web server'
   roles:

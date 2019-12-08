@@ -1,10 +1,10 @@
 ---
- - name: them nginx repository
-     apt_repository: repo='deb http://nginx.org/packages/ubuntu/ lucid nginx'
+# - name: them nginx repository
+#     apt_repository: repo='deb http://nginx.org/packages/ubuntu/ lucid nginx'
 
  - name: install nginx web server 
-    apt:
+   yum:
       name: nginx
-      state: latest
-      force: yes
+      state: present
+      
 
