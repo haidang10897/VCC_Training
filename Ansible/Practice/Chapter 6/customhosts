@@ -1,0 +1,8 @@
+#customhosts
+[db]
+192.168.61.11 ansible_ssh_user=ansible
+
+[www]
+
+[lb]
+

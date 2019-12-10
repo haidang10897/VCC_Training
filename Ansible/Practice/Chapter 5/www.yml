@@ -1,0 +1,12 @@
+# www.yml : playbook cho web server
+--- 
+- hosts: all
+  remote_user: ansible
+  become: yes
+  pre_tasks:
+    - shell: echo 'Bat dau config web server'
+  roles:
+    - nginx
+    - wordpress
+  post_tasks:
+    - shell: echo 'Ket thuc config web server'

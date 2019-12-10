@@ -1,0 +1,43 @@
+---
+- hosts: all
+  remote_user: ansible
+  sudo: yes
+  tasks:
+  - name: Tao group devops
+    group:
+      name: devops
+      state: present
+
+  - name: tao devops user voi quyen admin va cho vao group devops
+    user:
+      name: devops
+      comment: "Devops User"
+      uid: 2001
+      group: devops
+
+  - name: Cai dat htop package
+   action:
+     apt
+     name=htop
+     state=present
+     update_cache=yes
+
+
+- hosts: www
+  user: ansible
+  sudo: yes
+  tasks:
+  - name: thêm nginx repository 
+    apt-repository:
+       repo: 'deb http://nginx.org/packages/ubuntu/ lucid nginx'
+
+  - name: install nginx web server 
+    apt:
+      name: nginx
+      state: present
+ 
+  - name: start nginx service
+    service:
+      name: nginx
+      state: started
+     

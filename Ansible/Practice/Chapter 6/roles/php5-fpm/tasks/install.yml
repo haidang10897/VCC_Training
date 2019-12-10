@@ -1,0 +1,10 @@
+---
+ - name: Cai php5-fpm
+   yum:
+     name: "{{ item }}"
+     state: present
+     update_cache: yes
+   with_items: "{{ php5.packages }}"
+#   notify:
+#       - restart php5-fpm service
+       

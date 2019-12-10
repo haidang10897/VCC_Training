@@ -1,0 +1,13 @@
+---
+# roles/mysql/tasks/install_RedHat.yml
+- name: Cai dat mysql server
+  yum:
+   name: "{{ mysql['pkg'][server] }}"
+   update_cache: yes
+- name: Cat dat mysql client
+  yum:
+    name: "{{ mysql['pkg']['server']}}"
+    update_cache: yes
+- name: Cai dat mysql python
+  yum:
+    name: "{{mysql['pkg']['python']}}"

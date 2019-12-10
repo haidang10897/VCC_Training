@@ -14,4 +14,4 @@ mysql:
   pkg:
     server: mysql-server
     client: mysql-client
-  
+    pyhon: python-mysqldb
