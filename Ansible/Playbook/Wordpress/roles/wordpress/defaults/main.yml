@@ -1,0 +1,29 @@
+---
+# defaults file for wordpress
+nginx:
+        packages:
+                - nginx
+                - nginx-common
+
+mysql:
+        packages:
+                - mariadb-server
+                - mariadb-client
+                - python-mysqldb
+php:
+        packages:
+                - php
+                - php-mysql
+
+python:
+        packages:
+                - python2.7
+                - python-pip
+
+wordpress:
+  config:
+    database: wordpress
+    username: haidang10897
+    password: Dang!10081997
+
+

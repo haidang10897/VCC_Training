@@ -63,7 +63,9 @@
 [7. IP tables](Docs/VII.%20Networking%20Basic/7.%20IP%20tables.md)  
 
 ## VIII. Deploy Service 
-WIP...
+[Deploy wordpress on Ubuntu (apache, mysql, php)](../Ansible/Playbook/Wordpress)  
+
+WIP  
 
 ## IX. Bash script
 [Bài 1. CIDR to IP list](../Baitap/Bai%201.%20CIDR%20to%20IP%20list)  

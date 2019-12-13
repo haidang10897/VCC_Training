@@ -12,6 +12,9 @@
 
 [Code](./Practice)
 
+#Deploy Service
+[Deploy wordpress on Ubuntu (apache, mysql, php)](./Playbook/Wordpress)  
+
 # Tài liệu tham khảo
 
 https://tech.bizflycloud.vn/ansible-phan-1-cai-dat-va-cau-hinh-412.htm
