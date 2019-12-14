@@ -15,5 +15,7 @@ https://wordpress.org/support/article/editing-wp-config-php/
 
 cach sua thu 2 ( ko an toan) : trong module mysql_db, login_password: '' ( khong co password )  
 
+# Các bước làm:
+https://www.journaldev.com/24954/install-wordpress-on-ubuntu
 
 
