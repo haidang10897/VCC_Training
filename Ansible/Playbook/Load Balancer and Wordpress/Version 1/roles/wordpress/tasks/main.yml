@@ -1,0 +1,79 @@
+---
+# tasks file for wordpress
+
+- name: Tao WordPress database
+  mysql_db:
+          name: "{{wordpress['config']['database']}}"
+          state: present
+          login_user: root
+          login_password: ''
+          quick: false
+  become: yes
+  tags:
+          - db
+
+- name: Tao user WordPress db
+  mysql_user:
+          name: "{{wordpress['config']['username']}}"
+          host: localhost
+          password: "{{wordpress['config']['password']}}"
+          # priv: *.*:ALL,GRANT
+          priv: "{{wordpress['config']['database']}}.*:ALL"
+  become: yes
+
+- name: Download wordpress
+  get_url:
+          url: https://wordpress.org/latest.tar.gz
+          dest: /tmp/lastest.tar.gz
+
+- name: Tao folder de extract wordpress
+  file:
+    path: /tmp/wordpress/
+    state: directory
+
+- name: Extract wordpress
+  unarchive:
+          src: /tmp/lastest.tar.gz
+          dest: /tmp/wordpress/
+          remote_src: yes
+
+- name: Tao folder de copy wordpress
+  file:
+    path: /var/www/html/wordpress/
+    state: directory
+
+- name: Copy wordpress vao /var/www/html
+  copy:
+          src: /tmp/wordpress/wordpress/
+          dest: /var/www/html/wordpress/
+          remote_src: yes
+- name: chown sang www-data cho folder wordpress
+  file:
+          path: /var/www/html/wordpress/
+          owner: www-data
+          group: www-data
+          state: directory
+          mode: 0755
+
+- name: Tao folder upload trong wordpress
+  file:
+    path: /var/www/html/wordpress/wp-content/uploads
+    state: directory
+
+- name: chown sang www-data cho folder upload
+  file:
+          path: /var/www/html/wordpress/wp-content/uploads
+          owner: www-data
+          group: www-data
+          state: directory
+
+- name: copy file cau hinh wordpress
+  template:
+          src: wp-config.php.j2
+          dest: /var/www/html/wordpress/wp-config.php
+
+- name: Test load balancer
+  copy:
+          src: file.php
+          dest: /var/www/html/file.php
+          

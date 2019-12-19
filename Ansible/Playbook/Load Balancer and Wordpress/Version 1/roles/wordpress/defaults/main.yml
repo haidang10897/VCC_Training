@@ -1,0 +1,10 @@
+---
+# defaults file for wordpress
+
+wordpress:
+  config:
+    database: wordpress
+    username: haidang10897
+    password: Dang!10081997
+
+
