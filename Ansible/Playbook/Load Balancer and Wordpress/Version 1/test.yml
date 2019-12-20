@@ -4,6 +4,12 @@
 - hosts: web
   remote_user: ansible
   become: yes
-  roles:
-    - LEMP
-    - wordpress
+  tasks:
+   - name: get master
+     mysql_replication:
+       mode: getmaster
+     register: get_master
+
+   - name: debug
+     debug:
+       msg: "{{get_master.File}}"

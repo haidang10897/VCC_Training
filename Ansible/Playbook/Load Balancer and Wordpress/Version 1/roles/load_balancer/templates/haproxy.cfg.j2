@@ -47,7 +47,7 @@ frontend haproxynode
 backend backendnodes
         balance {{load_balancer['config']['balance']}}
         option {{load_balancer['config']['option']}}
-        cookie SERVERNAME insert indirect nocache
+        cookie JSESSIONID insert indirect nocache
         server {{web['config']['name_1']}} {{web['config']['ip_1']}}:80 cookie s1 check
         server {{web['config']['name_2']}} {{web['config']['ip_2']}}:80 cookie s2 check
 
