@@ -1,0 +1,13 @@
+---
+- hosts: web1
+  remote_user: ansible
+  become: yes
+  roles:
+   - sync_db_basic_config_1
+
+
+- hosts: web2
+  remote_user: ansible
+  become: yes
+  roles:
+   - sync_db_basic_config_2

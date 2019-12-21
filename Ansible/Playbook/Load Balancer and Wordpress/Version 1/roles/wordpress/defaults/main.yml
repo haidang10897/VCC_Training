@@ -6,5 +6,14 @@ wordpress:
     database: wordpress
     username: haidang10897
     password: Dang!10081997
+  key:
+    AUTH_KEY: /D|ghJ|$YiII&Z?}3~w }NIwz/?%W5-:Z+4nJ`k@~FOxV{(9[rh.H2HpYo_r#zxw
+    SECURE_AUTH_KEY: U43?md7ImT6,qGJ$8xKvt&NL+Cl1O-HuKuCfv~x+*2xenVwUvR*_^8!w=JmC})X
+    LOGGED_IN_KEY: I.bw5?QJ4)4|#w*ikJ+/L}tWa.hO65;Q=yz6O<#}~9tC3+wwmCPvdU!ZrGJMZO+C
+    NONCE_KEY: IyQB=[RLtM{3,^uL!N{^p.W{}(46Sm`++eTp|Bn|d+7v8Hp^DH:%};a*gIU+x--v
+    AUTH_SALT: d}FMn224.k}70y4bt5iun>VY2P<%s|]iq(^MRS*^)}+&6uHvF,,Y_ty0!0D+mGxk
+    SECURE_AUTH_SALT: iNA|4Nw99d^c.(?^SLU([93$|sCJEe0-u2mFFHyI.`+Jq_!biX`*6|h+=uGi)+An
+    LOGGED_IN_SALT: h#!=]Gc+>Co6i<I*D_IA/tU-EkBJp8E9%gmd6DF4f xGGgi)9jv01!K<XXxWitj0
+    NONCE_SALT: I*3qxX!9Hi1~F*|-$15_2J7Ao=sBxsT$DG`qbm[I-gv}a--CR^s!Z.E;(1@H.-q=
 
 

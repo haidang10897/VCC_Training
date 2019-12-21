@@ -1,32 +1,21 @@
 ---
 # tasks file for sync_db
-- name: Config master master replica
-  template:
-          src: mysqld.cnf
-          dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-  notify:
-          - restart mysql service
 
-- name: Tao user WordPress db
-  mysql_user:
-          name: "{{database1['replica']['username']}}"
-          host: "%"
-          password: "{{database1['replica']['password']}}"
-          priv: "*.*:REPLICATION SLAVE"
-  become: yes
+
+
 
 - name: Lay master file va pos mysql cua server 2
   mysql_replication:
           login_host: "{{ database2['ip'] }}"
-          login_user: "{{database2['root']['username'] }}"
-          login_password: "{{ database2['root']['password'] }}"
+          login_user: "{{database2['replica']['username'] }}"
+          login_password: "{{ database2['replica']['password'] }}"
           mode: getmaster
   register: mysql_repl_j2
 
 - name: Change master host
   mysql_replication:
           master_host: "{{ database2['ip'] }}"
-          master_port: "{{mysql_repl_j2.Port}}"
+          # master_port: "{{mysql_repl_j2.Port}}"
           master_user: "{{database2['replica']['username']}}"
           master_password: "{{database2['replica']['password']}}"
           master_log_file: "{{mysql_repl_j2.File}}"

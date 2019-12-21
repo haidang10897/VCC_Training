@@ -96,7 +96,7 @@ max_binlog_size   = 100M
 # * Security Features
 #
 # Read the manual, too, if you want chroot!
- chroot = /var/lib/mysql/
+#chroot = /var/lib/mysql/
 #
 # For generating SSL certificates I recommend the OpenSSL GUI "tinyca".
 #
@@ -104,14 +104,14 @@ max_binlog_size   = 100M
 # ssl-cert=/etc/mysql/server-cert.pem
 # ssl-key=/etc/mysql/server-key.pem
 #
-server_id           = 1
+server_id           = 2
 log_bin             = /var/log/mysql/mysql-bin.log
 log_bin_index       = /var/log/mysql/mysql-bin.log.index
 relay_log           = /var/log/mysql/mysql-relay-bin
 relay_log_index     = /var/log/mysql/mysql-relay-bin.index
 #log_slave_updates   = 1
 auto-increment-increment = 2
-auto-increment-offset = 1
+auto-increment-offset = 2
 binlog_do_db = {{wordpress['config']['database']}}
 
 

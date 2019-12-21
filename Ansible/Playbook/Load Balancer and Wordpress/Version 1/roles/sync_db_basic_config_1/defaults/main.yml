@@ -1,0 +1,23 @@
+---
+# defaults file for sync_db
+database1:
+  replica:
+    username: replica
+    password: replica
+  root:
+    username: root
+    password: ''
+  ip: 10.20.1.53
+
+database2:
+  replica:
+    username: replica
+    password: replica
+  root:
+    username: root
+    password: ''
+  ip: 10.20.1.61
+
+wordpress:
+  config:
+    database: wordpress

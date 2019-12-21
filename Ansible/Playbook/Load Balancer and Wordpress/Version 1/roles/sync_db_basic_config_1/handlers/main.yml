@@ -1,0 +1,6 @@
+---
+# handlers file for sync_db
+ - name: restart mysql service
+   service:
+           name: mysql
+           state: restarted

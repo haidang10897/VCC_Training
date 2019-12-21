@@ -1,0 +1,15 @@
+---
+- name: Config master master replica
+  template:
+          src: mysqld.cnf.j2
+          dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  notify:
+     - restart mysql service
+
+- name: Tao user WordPress db
+  mysql_user:
+          name: "{{database1['replica']['username']}}"
+          host: "%"
+          password: "{{database1['replica']['password']}}"
+          priv: "*.*:REPLICATION SLAVE,SUPER"
+  become: yes
