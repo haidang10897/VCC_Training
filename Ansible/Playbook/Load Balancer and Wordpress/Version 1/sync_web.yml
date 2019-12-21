@@ -1,14 +1,12 @@
-# www.yml : playbook cho web server
---- 
-
+---
 - hosts: web1
   remote_user: ansible
   become: yes
   roles:
-    - sync_db_1
+    - sync_web_1
 
 - hosts: web2
   remote_user: ansible
   become: yes
   roles:
-    - sync_db_2
+    - sync_web_2

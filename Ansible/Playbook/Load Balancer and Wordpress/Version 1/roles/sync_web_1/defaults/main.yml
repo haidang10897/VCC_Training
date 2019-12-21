@@ -1,0 +1,8 @@
+---
+# defaults file for sync_web
+root:
+ password: EHzPB37PkQVKBTr2gAs4qJ2
+
+web:
+ hosts:
+  host2: 10.20.1.61

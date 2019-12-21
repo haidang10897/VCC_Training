@@ -1,6 +1,4 @@
-# www.yml : playbook cho web server
---- 
-
+---
 - hosts: web1
   remote_user: ansible
   become: yes

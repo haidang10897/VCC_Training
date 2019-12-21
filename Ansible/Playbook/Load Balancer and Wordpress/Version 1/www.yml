@@ -1,6 +1,6 @@
 # www.yml : playbook cho web server
 --- 
-- hosts: all
+- hosts: web:load_balancer
   remote_user: ansible
   become: yes
   roles:
@@ -18,3 +18,4 @@
   roles:
     - LEMP
     - wordpress
+

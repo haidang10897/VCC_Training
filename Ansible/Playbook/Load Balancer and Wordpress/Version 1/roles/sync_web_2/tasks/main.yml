@@ -1,0 +1,36 @@
+---
+# tasks file for sync_web
+
+- name: Cai dat sshpass
+  apt:
+          name: sshpass
+          state: present
+
+- name: Copy pub key len web
+  copy:
+          src: id_rsa.pub
+          dest: /root/.ssh/id_rsa.pub
+
+- name: Copy private key len web
+  copy:
+          src: id_rsa
+          dest: /root/.ssh/id_rsa
+
+- name: tao file password root
+  shell: "echo {{root['password']}} >> /root/.ssh/password.txt"
+
+- name: ssh copy id len web server con lai 
+  shell: "sshpass -f /root/.ssh/password.txt ssh-copy-id root@{{web['hosts']['host2']}}"
+
+- name: chmod private key
+  file:
+          path: /root/.ssh/id_rsa
+          mode: 0600
+          state: file
+
+- name: Rsync
+  template:
+          src: root.j2
+          dest: /var/spool/cron/crontabs/root
+
+

@@ -1,3 +1,5 @@
 # site.yml: day la sitewide playbook
 - include: www.yml
+- include: sync_web.yml
+- include: replica.yml
 
