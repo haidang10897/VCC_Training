@@ -1,0 +1,9 @@
+---
+
+- name: Percona Cluster
+  hosts: db
+  remote_user: ansible
+  become: yes
+
+  roles:
+    - ansible-role-percona-cluster
