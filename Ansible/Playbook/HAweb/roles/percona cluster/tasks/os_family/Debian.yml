@@ -1,0 +1,79 @@
+---
+
+#- name: add apt key
+#  apt_key:
+#    keyserver: keyserver.ubuntu.com
+#    id: "{{ percona_repo_gpgkey }}"
+
+#- name: repository installation
+#  apt_repository:
+#    filename: "{{ percona_repo_filename }}"
+#    repo: "{{ percona_repo_baseurl }}"
+
+- name: "Check if percona is installed"
+  package_facts:
+    manager: "auto"
+
+- name: purge percona xtradb cluster
+  apt:
+    name: percona*
+    autoremove: yes
+    autoclean: yes
+    purge: yes
+    state: absent
+  when: "'percona*' in ansible_facts.packages"
+
+- name: purge apparmor, mysql, mariadb
+  apt:
+    name: "{{ item }}"
+    autoremove: yes
+    autoclean: yes
+    purge: yes
+    state: absent
+  with_items:
+    - apparmor*
+    - mysql*
+    - mariadb*
+
+- name: install mariadb
+  apt:
+    name:
+      - mysql-server
+      - mysql-client
+    state: present
+
+- name: xoa mariadb
+  apt:
+    name:
+      - mysql-server
+      - mysql-client
+    state: absent
+    purge: yes
+    autoremove: yes
+    autoclean: yes
+  become: yes
+
+- name: xoa database
+  shell: rm -rf /var/lib/mysql
+
+- name: Down percona repo
+  get_url:
+    url: https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+    dest: /tmp/percona-release_latest.generic_all.deb
+
+- name: add rep
+  shell: dpkg -i /tmp/percona-release_latest.generic_all.deb
+
+- name: update cache
+  apt:
+    update_cache: yes
+  changed_when: false
+
+- name: install packages
+  apt:
+    name:
+      - "percona-xtradb-cluster-{{ percona_version }}"
+      - "python-pymysql"
+      - "python3-mysqldb"
+    state: present
+  become: yes

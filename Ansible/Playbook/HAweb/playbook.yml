@@ -5,7 +5,7 @@
   remote_user: ansible
   become: yes
   roles:
-    - ansible-role-percona-cluster
+    - percona cluster
 
 - name: Cai dat basic va LAMP
   hosts: all
