@@ -1,0 +1,15 @@
+---
+# tasks file for basic
+- name: Update Ubuntu
+  apt:
+    upgrade: full
+
+- name: Cai dat co ban
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - htop
+    - net-tools
+    - vim
+

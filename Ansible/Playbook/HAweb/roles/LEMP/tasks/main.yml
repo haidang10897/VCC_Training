@@ -1,0 +1,38 @@
+---
+# tasks file for wordpress
+
+- name: purge toan bo nginx co tren server
+  apt:
+          name: "{{ nginx.packages }}"
+          state: absent
+          purge: yes
+  
+- name: Cai dat apache va restart service
+  apt:
+          name: apache2
+          state: present
+  notify:
+          restart apache2 service
+
+- name: Cai dat mysql 
+  apt:
+          name: "{{ mysql.packages }}"
+          state: present
+
+- name: Cai dat php
+  apt:
+          name: "{{ php.packages }}"
+          state: present
+
+- name: Tao site PHP
+  copy:
+          src: php.info
+          dest: /var/www/html/info.php
+
+- name: Download python 2.7
+  apt:
+          name: "{{ python.packages }}"
+          state: present
+
+
+          

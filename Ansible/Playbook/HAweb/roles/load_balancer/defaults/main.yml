@@ -1,0 +1,22 @@
+---
+# defaults file for load_balancer
+load_balancer:
+ config:
+  maxconn: 812
+  balance: roundrobin
+  option: fowardfor
+
+web:
+ config:
+  name_1: dangth-3
+  name_2: dangth-4
+  ip_1: 10.20.1.53
+  ip_2: 10.20.1.61
+
+loadbalancer1_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
+loadbalancer1_bind_interface: "eth1"
+loadbalancer_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
+loadbalancer_bind_interface: "eth0"
+loadbalancer_ip1: "{{ hostvars[groups['lb'][0]]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
+loadbalancer_ip2: "{{ hostvars[groups['lb'][1]]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
+

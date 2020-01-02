@@ -1,0 +1,16 @@
+---
+
+#- name: cai WP
+#  hosts: db
+#  remote_user: ansible
+#  become: yes
+#  roles:
+#    - wordpress
+
+- name: test ip lb
+  hosts: lb
+  remote_user: ansible
+  become: yes
+  roles:
+     - load_balancer
+

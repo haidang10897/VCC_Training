@@ -1,0 +1,11 @@
+---
+# defaults file for Glusterfs
+gluster_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
+glusterfs_bind_interface: "eth0"
+glusterfs_ip1: "{{ hostvars[groups['db'][0]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
+glusterfs_ip2: "{{ hostvars[groups['db'][1]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
+glusterfs_ip3: "{{ hostvars[groups['db'][2]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
+gluster_volume: "glustervolume"
+gluster_brick: "gluster-storage"
+
+

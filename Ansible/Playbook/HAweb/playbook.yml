@@ -4,6 +4,13 @@
   hosts: db
   remote_user: ansible
   become: yes
-
   roles:
     - ansible-role-percona-cluster
+
+- name: Cai dat basic va LAMP
+  hosts: all
+  remote_user: ansible
+  become: yes
+  roles:
+    - basic
+    - LEMP

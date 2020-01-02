@@ -1,0 +1,23 @@
+---
+# defaults file for wordpress
+nginx:
+        packages:
+                - nginx
+                - nginx-common
+
+php:
+        packages:
+                - php
+                - php-mysql
+
+python:
+        packages:
+                - python2.7
+                - python-pip
+
+mysql:
+        packages:
+                - mysql-server
+                - mysql-client
+                - python-mysqldb
+

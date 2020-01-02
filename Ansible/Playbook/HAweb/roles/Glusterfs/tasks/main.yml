@@ -1,0 +1,69 @@
+---
+# tasks file for Glusterfs
+#
+- name: Purge glusterfs
+  apt:
+          name: glusterfs*
+          state: absent
+          autoremove: yes
+          autoclean: yes
+          purge: yes
+
+- name: Delete folder Glusterfs
+  file:
+          path: "{{ item }}"
+          state: absent
+  with_items:
+          - /var/lib/heketi
+          - /var/lib/glusterd
+          - /var/log/glusterfs
+
+- name: hien ip
+  debug:
+          msg: "{{item}}"
+  with_items:
+          - "{{glusterfs_ip1}}"
+          - "{{glusterfs_ip2}}"
+          - "{{glusterfs_ip3}}"
+
+         
+- name: add repo glusterfs
+  apt_repository:
+          repo: ppa:gluster/glusterfs-5
+
+- name: install glusterfs
+  apt:
+          name: "{{ item }}"
+          state: present
+  with_items:
+          - glusterfs-server
+          - attr
+
+- name: add peer probe node 2 o node 1
+  shell: gluster peer probe "{{ glusterfs_ip2 }}"
+  when: gluster_bind_address == glusterfs_ip1
+
+- name: add peer probe node 3 o node 1
+  shell: gluster peer probe "{{ glusterfs_ip3 }}"
+  when: gluster_bind_address == glusterfs_ip1
+
+- name: create volume
+  shell: 'gluster volume create "{{ gluster_volume }}" replica 3 transport tcp "{{ glusterfs_ip1 }}":/"{{ gluster_brick }}" "{{ glusterfs_ip2 }}":/"{{ gluster_brick }}" "{{ glusterfs_ip3 }}":/"{{ gluster_brick }}" force'
+  when: gluster_bind_address == glusterfs_ip1
+
+- name: start volume
+  shell: gluster volume start "{{ gluster_volume }}"
+  when: gluster_bind_address == glusterfs_ip1
+
+- name: mount glusterfs volume
+  #  shell: mount -t glusterfs localhost:/"{{gluster_volume}}" /var/www
+  mount:
+          src: localhost:/"{{gluster_volume}}"
+          path: /var/www
+          fstype: glusterfs
+          state: present
+  when: gluster_bind_address == glusterfs_ip1
+
+
+
+
