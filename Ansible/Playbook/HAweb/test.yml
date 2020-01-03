@@ -7,10 +7,17 @@
 #  roles:
 #    - wordpress
 
-- name: test ip lb
+#- name: test ip lb
+#  hosts: lb
+#  remote_user: ansible
+#  become: yes
+#  roles:
+#     - load_balancer
+
+- name: test KA
   hosts: lb
   remote_user: ansible
   become: yes
   roles:
-     - load_balancer
+    - keepalived
 

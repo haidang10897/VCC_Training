@@ -2,24 +2,27 @@
 # tasks file for load_balancer
 
 
-#- name: Cai dat Haproxy
-#  apt:
-#          name: haproxy
-#          state: present
+- name: Cai dat Haproxy
+  apt:
+          name: haproxy
+          state: present
 
-#- name: Enable Haproxy
-#  copy:
-#          src: haproxy
-#          dest: /etc/default/haproxy
+- name: Enable Haproxy
+  copy:
+          src: haproxy
+          dest: /etc/default/haproxy
 
 #- name: Config Haproxy
 #  template:
 #          src: haproxy.cfg.j2
 #          dest: /etc/haproxy/haproxy.cfg
 
-- name: debug ip
-  debug:
-    msg: "{{ loadbalancer_bind_address }}"
+#- name: debug ip
+#  debug:
+#    msg: "{{ item }}"
+#  with_items:
+#    - "{{ hostvars[groups['lb'][0]]['ansible_' + loadbalancer1_bind_interface]['ipv4']['address'] }}"
+#    - "{{ hostvars[groups['lb'][1]]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
 
 
 

@@ -1,0 +1,23 @@
+---
+# tasks file for keepalived
+- name: Cai dat Keep alived
+  apt:
+          name: keepalived
+          state: present
+
+- name: Copy config master
+  template:
+          src: keepalived_master.conf.j2
+          dest: /etc/keepalived/keepalived.conf
+  when: loadbalancer1_bind_address == loadbalancer_ip1
+  notify:
+          - restart keepalived service
+
+- name: Copy config slave
+  template:
+          src: keepalived_slave.conf.j2
+          dest: /etc/keepalived/keepalived.conf
+  when: loadbalancer_bind_address == loadbalancer_ip2
+  notify:
+          - restart keepalived service
+

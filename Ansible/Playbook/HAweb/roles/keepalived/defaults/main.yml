@@ -1,17 +1,9 @@
 ---
-# defaults file for load_balancer
-load_balancer:
- config:
-  maxconn: 812
-  balance: roundrobin
-  option: fowardfor
+# defaults file for keepalived
 
-web:
- config:
-  name_1: dangth-3
-  name_2: dangth-4
-  ip_1: 10.20.1.53
-  ip_2: 10.20.1.61
+virtual_ipaddress: 103.109.43.43
+master_interface: eth0 #interface card WAN
+slave_interface: eth1
 
 # Lay IP cua eth1 cua loadbalancer 
 loadbalancer1_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + loadbalancer1_bind_interface]['ipv4']['address'] }}"
@@ -23,4 +15,3 @@ loadbalancer_bind_interface: "eth0"
 loadbalancer_ip1: "{{ hostvars[groups['lb'][0]]['ansible_' + loadbalancer1_bind_interface]['ipv4']['address'] }}"
 #IP Lan loadbalancer 2
 loadbalancer_ip2: "{{ hostvars[groups['lb'][1]]['ansible_' + loadbalancer_bind_interface]['ipv4']['address'] }}"
-

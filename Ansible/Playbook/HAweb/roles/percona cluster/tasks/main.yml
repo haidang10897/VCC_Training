@@ -35,3 +35,17 @@
 - name: include bootstrap tasks
   include_tasks: bootstrap.yml
   tags: cluster
+
+- name: grant priv root
+  mysql_user:
+          name: "root"
+          host: localhost
+          login_user: "root"
+          login_password: "root"
+          password: "root"
+          # priv: *.*:ALL,GRANT
+          priv: "*.*:ALL,GRANT"
+  become: yes
+  when:
+    - percona_bind_address == percona_master_node
+  
