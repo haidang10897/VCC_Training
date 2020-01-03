@@ -4,14 +4,19 @@ load_balancer:
  config:
   maxconn: 812
   balance: roundrobin
-  option: fowardfor
+  option: httpclose
 
 web:
  config:
   name_1: dangth-3
   name_2: dangth-4
+  name_3: dangth-5
   ip_1: 10.20.1.53
   ip_2: 10.20.1.61
+  ip_3: 10.20.1.29
+
+stat_username: admin
+stat_password: admin
 
 # Lay IP cua eth1 cua loadbalancer 
 loadbalancer1_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + loadbalancer1_bind_interface]['ipv4']['address'] }}"

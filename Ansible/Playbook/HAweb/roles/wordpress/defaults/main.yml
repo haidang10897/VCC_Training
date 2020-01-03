@@ -15,7 +15,7 @@ wordpress:
     SECURE_AUTH_SALT: iNA|4Nw99d^c.(?^SLU([93$|sCJEe0-u2mFFHyI.`+Jq_!biX`*6|h+=uGi)+An
     LOGGED_IN_SALT: h#!=]Gc+>Co6i<I*D_IA/tU-EkBJp8E9%gmd6DF4f xGGgi)9jv01!K<XXxWitj0
     NONCE_SALT: I*3qxX!9Hi1~F*|-$15_2J7Ao=sBxsT$DG`qbm[I-gv}a--CR^s!Z.E;(1@H.-q=
-
+  wordpress_ip: http://103.109.43.43/wordpress
 
 gluster_bind_address: "{{ hostvars[inventory_hostname]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
 glusterfs_bind_interface: "eth0"

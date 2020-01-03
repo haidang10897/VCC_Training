@@ -46,8 +46,17 @@ frontend haproxynode
 
 backend backendnodes
         balance {{load_balancer['config']['balance']}}
-        #option {{load_balancer['config']['option']}}
+        option {{load_balancer['config']['option']}} # httpclose
         cookie JSESSIONID insert indirect nocache
         server {{web['config']['name_1']}} {{web['config']['ip_1']}}:80 cookie s1 check
         server {{web['config']['name_2']}} {{web['config']['ip_2']}}:80 cookie s2 check
+        server {{web['config']['name_3']}} {{web['config']['ip_3']}}:80 cookie s2 check
+
+listen stats
+    bind :32700
+    stats enable
+    stats uri /stat
+    stats hide-version
+    stats auth {{stat_username}}:{{stat_password}}
+
 

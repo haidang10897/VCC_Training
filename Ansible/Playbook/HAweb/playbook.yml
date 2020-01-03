@@ -1,16 +1,33 @@
 ---
 
-- name: Percona Cluster
-  hosts: db
-  remote_user: ansible
-  become: yes
-  roles:
-    - percona cluster
+#- name: Percona Cluster
+#  hosts: db
+#  remote_user: ansible
+#  become: yes
+#  roles:
+#    - percona cluster
 
-- name: Cai dat basic va LAMP
+- name: Cai dat basic
   hosts: all
   remote_user: ansible
   become: yes
   roles:
     - basic
+    
+
+- name: cai glusterfs, wordpress
+  hosts: db
+  remote_user: ansible
+  become: yes
+  roles:
     - LEMP
+    - Glusterfs
+    - wordpress
+    
+- name: cai load balancer va keepalived
+  hosts: lb
+  remote_user: ansible
+  become: yes
+  roles:
+    - load_balancer
+    - keepalived

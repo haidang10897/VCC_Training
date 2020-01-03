@@ -6,18 +6,28 @@
           name: "{{ nginx.packages }}"
           state: absent
           purge: yes
+          autoremove: yes
+          autoclean: yes
+
+- name: purge toan bo php
+  apt:
+          name: php*
+          state: absent
+          purge: yes
+          autoremove: yes
+          autoclean: yes
   
-- name: Cai dat apache va restart service
+- name: Cai dat nginx va restart service
   apt:
           name: apache2
           state: present
   notify:
           restart apache2 service
 
-- name: Cai dat mysql 
-  apt:
-          name: "{{ mysql.packages }}"
-          state: present
+#- name: Cai dat mysql 
+#  apt:
+#          name: "{{ mysql.packages }}"
+#          state: present
 
 - name: Cai dat php
   apt:

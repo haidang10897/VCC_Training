@@ -14,10 +14,17 @@
 #  roles:
 #     - load_balancer
 
-- name: test KA
+#- name: test KA
+#  hosts: lb
+#  remote_user: ansible
+#  become: yes
+#  roles:
+#    - keepalived
+
+- name: test HA
   hosts: lb
   remote_user: ansible
   become: yes
   roles:
-    - keepalived
+    - load_balancer
 

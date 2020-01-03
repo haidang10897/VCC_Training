@@ -2,13 +2,15 @@
 # defaults file for wordpress
 nginx:
         packages:
-                - nginx
-                - nginx-common
+                - nginx*
+                
+                - apache*
 
 php:
         packages:
                 - php
                 - php-mysql
+                
 
 python:
         packages:

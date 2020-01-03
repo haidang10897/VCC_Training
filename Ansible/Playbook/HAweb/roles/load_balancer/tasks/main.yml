@@ -12,10 +12,15 @@
           src: haproxy
           dest: /etc/default/haproxy
 
-#- name: Config Haproxy
-#  template:
-#          src: haproxy.cfg.j2
-#          dest: /etc/haproxy/haproxy.cfg
+- name: Config Haproxy
+  template:
+          src: haproxy.cfg.j2
+          dest: /etc/haproxy/haproxy.cfg
+
+- name: restart service
+  service:
+          name: haproxy
+          state: restarted
 
 #- name: debug ip
 #  debug:
