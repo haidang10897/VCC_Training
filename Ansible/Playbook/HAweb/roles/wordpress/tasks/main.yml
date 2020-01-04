@@ -5,8 +5,8 @@
   mysql_db:
           name: "{{wordpress['config']['database']}}"
 #          state: present
-          login_user: "root"
-          login_password: "root"
+          login_user: "{{db_root_user}}"
+          login_password: "{{db_root_pass}}"
 #          quick: false
 #  become: yes
   when: gluster_bind_address == glusterfs_ip1
@@ -15,8 +15,8 @@
   mysql_user:
           name: "{{wordpress['config']['username']}}"
           host: localhost
-          login_user: "root"
-          login_password: "root"
+          login_user: "{{db_root_user}}"
+          login_password: "{{db_root_pass}}"
           password: "{{wordpress['config']['password']}}"
           # priv: *.*:ALL,GRANT
           priv: "{{wordpress['config']['database']}}.*:ALL"
@@ -89,4 +89,3 @@
   copy:
           src: file.php
           dest: /var/www/html/file.php
-          

@@ -1,6 +1,8 @@
 ---
 # defaults file for wordpress
 
+db_root_user: root 
+db_root_pass: root
 wordpress:
   config:
     database: wordpress
@@ -22,6 +24,3 @@ glusterfs_bind_interface: "eth0"
 glusterfs_ip1: "{{ hostvars[groups['db'][0]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
 glusterfs_ip2: "{{ hostvars[groups['db'][1]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
 glusterfs_ip3: "{{ hostvars[groups['db'][2]]['ansible_' + glusterfs_bind_interface]['ipv4']['address'] }}"
-
-
-
