@@ -14,6 +14,8 @@
 
 # Deploy Service
 [Deploy wordpress on Ubuntu (apache, mysql, php)](./Playbook/Wordpress)  
+[Load Balancer and Wordpress](./Playbook/Load%20Balancer%20and%20Wordpress/Version%201)  
+[HAweb](./Playbook/HAweb)  
 
 # Tài liệu tham khảo
 
