@@ -1,3 +1,3 @@
 ﻿# OpenStack
-- [I. Giới thiệu về OpenStack](./Docs/I. Giới%20thiệu.md)  
+- [I. Giới thiệu về OpenStack](./Docs/I.%20Giới%20thiệu.md)  
 
