@@ -5,5 +5,7 @@
 - [3. Virtualization and Hypervisor](./Docs/3.%20Virtualization%20and%20Hypervisor.md)  
 - [3.1. KVM](./Docs/3.1.%20KVM.md)  
 - [3.2. KVM storage](./Docs/3.2.%20KVM%20storage.md)  
+- [3.3. Tạo một máy ảo kvm](./Docs/3.3.%20Tạo%20một%20máy%20ảo%20kvm.md)  
+- [3.4. Quản lý KVM instance với libvirt](./Docs/3.4.%20Quản%20lý%20KVM%20instance%20với%20libvirt.md)  
 
 
