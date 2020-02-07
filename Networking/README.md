@@ -10,4 +10,5 @@
 - [3.5. KVM Networking](./Docs/3.5.%20KVM%20Networking.md)  
 - [3.6. Storage pool và Manage Volume](./Docs/3.6.%20Storage%20pool%20và%20Manage%20Volume.md)  
 - [3.7. Manual migration using iscsi or glusterfs](./Docs/3.7.%20Manual%20migration%20using%20iscsi%20or%20glusterfs.md)  
-
+- [3.8. Monitoring KVM Virtual Machine](./Docs/3.8.%20Monitoring%20KVM%20Virtual%20Machine.md)  
+- [3.9 Snapshot](./Docs/3.9%20Snapshot.md)  
