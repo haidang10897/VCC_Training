@@ -110,5 +110,6 @@ Các định dạng trên đĩa (Disk Formats) của một image máy ảo là �
 - VDB : là một disk tạm có các sản phẩm tạo ra cùng với instance sẽ bị xóa khi kết thức instance.
 - VDC : kết nối với cinder-volume sử dụng iSCSI. Sau khi compute node quy định vCPU và tài nguyên bộ nhớ. Các instance boots up từ root volume VDA. Instance chạy và thay đổi dữ liệu trên disk . Nếu volume store nằm trên một mạng riêng biệt , tùy chọn my_block_storage_ip trong tập tin cấu hình storage node sẽ chỉ đạo giao tiếp với compute node.
   
-### Source: 
+### Ref: 
 http://www.sparkmycloud.com/blog/openstack-glance/
+https://topdev.vn/blog/restful-api-la-gi/
