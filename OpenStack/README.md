@@ -7,15 +7,17 @@
 - [Keystone](./Docs/II.1.%20Keystone.md)  
 ## Thực hành
 - [Cài đặt Keystone](./Docs/II.1.1.%20Cài%20đặt%20Keystone.md)  
+- [Cách dùng Keystone](./Docs/II.1.1.a.%20Cách%20dùng%20Keystone.md)  
 
 # Glance
 ## Lý thuyết
 - [Glance](./Docs/II.2.%20Glance.md)  
 ## Thực hành
 - [Cài đặt Glance](./Docs/II.2.1.%20Cài%20đặt%20Glance.md)  
+- [Cách dùng Glance](./Docs/II.2.1.a.%20Cách%20dùng%20Glance.md)  
 
 # Nova
 ## Lý Thuyết
-
+- [Nova](./Docs/II.3.%20Nova.md)  
 ## Thực hành
 - [Cài đặt Nova](./Docs/II.3.1.%20Cài%20đặt%20Nova.md)  

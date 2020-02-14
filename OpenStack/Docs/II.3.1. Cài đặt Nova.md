@@ -312,3 +312,5 @@ service nova-compute restart
 	- <img src = "../Images/II.3.1. Cài đặt Nova/6.png">   
 
 
+# Tham khảo lỗi
+https://ask.openstack.org/en/question/55294/nova-service-state-all-down/
