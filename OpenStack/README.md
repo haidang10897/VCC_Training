@@ -13,3 +13,9 @@
 - [Glance](./Docs/II.2.%20Glance.md)  
 ## Thực hành
 - [Cài đặt Glance](./Docs/II.2.1.%20Cài%20đặt%20Glance.md)  
+
+# Nova
+## Lý Thuyết
+
+## Thực hành
+- [Cài đặt Nova](./Docs/II.3.1.%20Cài%20đặt%20Nova.md)  
