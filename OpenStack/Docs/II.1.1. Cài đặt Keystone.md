@@ -165,7 +165,7 @@ MariaDB [(none)]> exit
 - Dùng lệnh `vi` để mở và sửa file `/etc/keystone/keystone.conf`.
 	- Trong section `[database]` thêm dòng dưới
 		```sh
-		connection = mysql+pymysql://keystone:Welcome123@controller/keystone
+		connection = mysql+pymysql://keystone:lxcpassword@controller/keystone
 		```
 
 	- Trong section `[token]`, cấu hình Fernet token provider:
@@ -206,7 +206,8 @@ MariaDB [(none)]> exit
 		 # Global configuration
 		 ServerName controller
 		 ```
-- LƯU Ý XEM TRONG /etc/apache/site-enabled/keystone.conf XEM ĐÃ ADD PORT 35357 và 5000 CHƯA
+- LƯU Ý XEM TRONG /etc/apache/site-availabled/keystone.conf XEM ĐÃ ADD PORT 35357 và 5000 NHƯ DƯỚI CHƯA
+- tạo file /etc/apache2/sites-available/wsgi-keystone.conf chứa nội dung dưới
 ```sh
 Listen 5000
 Listen 35357
@@ -271,6 +272,9 @@ Alias /identity /usr/bin/keystone-wsgi-public
 </Location>
 
 ```  
+- Tạo link để cấu hình virtual host cho dịch vụ keysonte trong apache
+```ln -s /etc/apache2/sites-available/wsgi-keystone.conf /etc/apache2/sites-enabled```  
+
 - Khởi động lại `apache`
 	```sh
 	service apache2 restart
@@ -284,7 +288,7 @@ Alias /identity /usr/bin/keystone-wsgi-public
 - Tạo tài khoản quản trị bằng cách đặt biến môi trường:
 	```sh
 	export OS_USERNAME=admin
-	export OS_PASSWORD=Welcome123
+	export OS_PASSWORD=lxcpassword
 	export OS_PROJECT_NAME=admin
 	export OS_USER_DOMAIN_NAME=Default
 	export OS_PROJECT_DOMAIN_NAME=Default

@@ -2,13 +2,8 @@
 - [High Availability](./Docs/1.%20What-is-High-Availability.md)  
 - [2.1. Cách cài đặt Percona xtradb cluster](./Docs/2.1.%20Cách%20cài%20đặt%20Percona%20xtradb%20cluster.md)  
 - [2. Ghi chép về các giải pháp HA database](./Docs/2.%20Ghi%20chép%20về%20các%20giải%20pháp%20HA%20database.md)  
-- [3. Virtualization and Hypervisor](./Docs/3.%20Virtualization%20and%20Hypervisor.md)  
-- [3.1. KVM](./Docs/3.1.%20KVM.md)  
-- [3.2. KVM storage](./Docs/3.2.%20KVM%20storage.md)  
-- [3.3. Tạo một máy ảo kvm](./Docs/3.3.%20Tạo%20một%20máy%20ảo%20kvm.md)  
-- [3.4. Quản lý KVM instance với libvirt](./Docs/3.4.%20Quản%20lý%20KVM%20instance%20với%20libvirt.md)  
-- [3.5. KVM Networking](./Docs/3.5.%20KVM%20Networking.md)  
-- [3.6. Storage pool và Manage Volume](./Docs/3.6.%20Storage%20pool%20và%20Manage%20Volume.md)  
-- [3.7. Manual migration using iscsi or glusterfs](./Docs/3.7.%20Manual%20migration%20using%20iscsi%20or%20glusterfs.md)  
-- [3.8. Monitoring KVM Virtual Machine](./Docs/3.8.%20Monitoring%20KVM%20Virtual%20Machine.md)  
-- [3.9 Snapshot](./Docs/3.9%20Snapshot.md)  
+
+# Reference
+- [Khái niệm VxLAN - Vietnamese Professional](./Reference/Khái%20niệm%20về%20VxLAN%20-%20Vietnamese%20Professional.md)  
+- [VxLAN - Trung tâm WAREN](./Reference/VxLAN%20-%20Trung%20tâm%20WAREN.md)  
+- [TCP_IP là gì_ Ưu và nhược điểm của TCP_IP so với mô hình OSI](./Reference/TCP_IP%20là%20gì_%20Ưu%20và%20nhược%20điểm%20của%20TCP_IP%20so%20với%20mô%20hình%20OSI.md)  
