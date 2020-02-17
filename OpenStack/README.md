@@ -27,3 +27,9 @@
 
 ## Thực hành
 - [Cài đặt Neutron](./Docs/II.4.1.%20Cài%20đặt%20Neutron.md)  
+
+# Horizon
+- [Cài đặt Horizon](./Docs/II.5.1.%20Cài%20đặt%20Horizon.md)  
+## Ref + Fix lỗi
+- [Ref](./Ref)  
+- [Fix Lỗi](./Ref/Fix%20Error)  

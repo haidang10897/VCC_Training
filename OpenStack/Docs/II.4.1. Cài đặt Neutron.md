@@ -6,7 +6,7 @@
 ###  Tạo database cho neutron
 -  Đăng nhập vào `database`
 	 ```sh
-	 mysql -u root -pWelcome123
+	 mysql -u root -plxcpassword
 	 ```
 
 	- Tạo database `neutron` và phân quyền:
@@ -305,7 +305,7 @@ enable_isolated_metadata = True
 	- Trong section `[DEFAULT]` khai báo mới hoặc sửa thành dòng dưới
 	```sh
 	nova_metadata_ip = controller
-	metadata_proxy_shared_secret = Welcome123
+	metadata_proxy_shared_secret = lxcpassword
 	```
 ### Sửa trong file `/etc/nova/nova.conf`
 - Trong section `[neutron]` khai báo mới hoặc sửa thành dòng dưới (thêm section `[neutron]`):
