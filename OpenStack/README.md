@@ -33,3 +33,6 @@
 ## Ref + Fix lỗi
 - [Ref](./Ref)  
 - [Fix Lỗi](./Ref/Fix%20Error)  
+
+# Dựng Openstack Stein
+- [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md)  
