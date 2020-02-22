@@ -1,14 +1,24 @@
 ﻿# Mục lục
 I. Chuẩn bị môi trường
+
 I.1. Chuẩn bị môi trường mạng
+
 I.2. Cài đặt chung cơ bản
+
 II. Cài đặt các dịch vụ của Openstack
+
 II.1. Keystone
+
 II.2. Glance
+
 II.3. Placement
+
 II.4. Nova
+
 II.5. Neutron
+
 II.6. Horizon
+
 III. Khởi tạo và chạy Instance
 
 
@@ -32,7 +42,7 @@ III. Khởi tạo và chạy Instance
 
 <img src = "../Images/III. Dựng Openstack Stein/Overview/4.png">  
 
-<img src = "../Images/III. Dựng Openstack Stein/Overview/7.png">  
+<img src = "../Images/III. Dựng Openstack Stein/Overview/7.jpg">  
 
 ### I.1.2. Thiết lập VMWARE
 
