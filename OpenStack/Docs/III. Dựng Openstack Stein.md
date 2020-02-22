@@ -42,7 +42,7 @@ III. Khởi tạo và chạy Instance
 
 <img src = "../Images/III. Dựng Openstack Stein/Overview/4.png">  
 
-<img src = "../Images/III. Dựng Openstack Stein/Overview/7.jpg">  
+<img src = "../Images/III. Dựng Openstack Stein/Overview/7.JPG">  
 
 ### I.1.2. Thiết lập VMWARE
 
