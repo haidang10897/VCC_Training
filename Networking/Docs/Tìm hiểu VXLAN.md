@@ -66,8 +66,8 @@ Theo truyền thống, tất cả các trung tâm dữ liệu data center sử d
 
 - VNI xác định phạm vi của inner MAC frame sinh ra bởi máy ảo VM. Do đó, bạn có thể overlapping địa chỉ MAC thông qua segment như không bị lẫn lộn các lưu lượng bởi chúng đã bị cô lập  bởi VNI khác nhau. VNI nằm trong header được đóng gói với innere MAC sinh ra bởi VM. 
 
-   ![img](../Images/Tìm hiểu VXLAN/4.1.png)
-
+   
+<img src = "../Images/Tìm hiểu VXLAN/4.1.png"> 
 
 <a name = '1.3.2'></a>
 ### 1.3.2.   Encapsulation và VTEP
@@ -83,7 +83,7 @@ VXLAN tạo một mạng vật lý layer 2 trên lớp mạng IP. Dưới đây 
 
 - VTEPs là các node mà cung cấp các chức năng Encalsulation và De-encapsulation. Chúng biết rõ được làm thế nào mà VTEPs encap và de-encap lưu lượng từ bất kì máy ảo kết nối với một mạng VXLAN dựa trên mạng vật lý layer 2. 
 
-   ![img](../Images/Tìm hiểu VXLAN/4.2.png)
+   <img src = "../Images/Tìm hiểu VXLAN/4.2.png"> 
 
 - VXLAN học tất cả các địa chỉ MAC của máy ảo và việc kết nối nó tới VTEP IP thì được thực hiện thông qua sự hỗ trợ của mạng vật lý. Một trong những giao thức được sử dụng trong mạng vật lý là IP multicast. VXLAN sử dụng giao thức của IP multicast để cư trú trong bảng forwarding trong VTEP.
 
@@ -95,7 +95,7 @@ VXLAN tạo một mạng vật lý layer 2 trên lớp mạng IP. Dưới đây 
 <a name = '1.3.3'></a>
 ### 1.3.3.   VXLAN frame format
 
-![img](../Images/Tìm hiểu VXLAN/4.3.png)
+<img src = "../Images/Tìm hiểu VXLAN/4.3.png"> 
 
 Frame Ethernet thông thường bao gồm địa chỉ MAC nguồn, MAC đích, Ethernet type và thêm phần VLAN_ID (802.1q) nếu có. Đây là frame được đóng gói sử dụng VXLAN, thêm các header sau: 
 
@@ -120,14 +120,14 @@ Trong quá trình cấu hình VXLAN, cần cấp phát địa chỉ IP multicast
 
 Sau đây sẽ tìm hiểu hoạt động chi tiết cách frame đi qua VTEP và đi qua mạng vật lý trong VXLAN triển khai trên một mạng logic với mô hình như sau:
 
-   ![img](../Images/Tìm hiểu VXLAN/4.4.png)
+   <img src = "../Images/Tìm hiểu VXLAN/4.4.png"> 
 
 <a name = '2.1'></a>
 ## 2.1.  VM gửi request tham gia vào group multicast
 
 Giả sử một mạng logic trên 4 host như hình. Topo mạng vật lý cung cấp một VLAN 2000 để vận chuyển các lưu lượng VXLAN. Trong trường hợp này, chỉ IGMP snooping và IGMP querier được cấu hình trên mạng vật lý. Một vài bước sẽ được thực hiện trước khi các thiết bị trên mạng vật lý có thể xử lý các gói tin multicast. 
 
-![img](../Images/Tìm hiểu VXLAN/4.5.png)
+<img src = "../Images/Tìm hiểu VXLAN/4.5.png"> 
 
 - IGMP Packet flows:
    
@@ -142,7 +142,7 @@ Giả sử một mạng logic trên 4 host như hình. Topo mạng vật lý cun
    Host 2 và Host 3 VTEP không join nhóm multicast bởi vì chúng không có máy ảo chạy trên nó và cần kết nối tới VXLAN 5001. Chỉ VTEP nào cần tham gia vào nhóm multicast mới gửi request join vào nhóm 
 
 
-![img](../Images/Tìm hiểu VXLAN/4.6.png)
+<img src = "../Images/Tìm hiểu VXLAN/4.6.png"> 
 
 - Multicast Packet flow:
 
@@ -160,13 +160,13 @@ Giả sử một mạng logic trên 4 host như hình. Topo mạng vật lý cun
  
 Ban đầu, mỗi VTEP sau khi đã join vào nhóm IP multicast đều có một bảng forwarding table như sau: 
 
-![img](../Images/Tìm hiểu VXLAN/4.7.png)
+<img src = "../Images/Tìm hiểu VXLAN/4.7.png"> 
 
 Các bước sau sẽ được thực hiện để VTEP học và ghi vào bảng forwarding table: 
 
 - Đầu tiên, một bản tin ARP request được gửi từ VM MAC1 để tìm địa chỉ MAC của máy ảo đích nó cần gửi tin đến VM MAC2 trên Host 2. ARP request là bản tin broadcast. 
 
-   ![img](../Images/Tìm hiểu VXLAN/4.8.png)
+   <img src = "../Images/Tìm hiểu VXLAN/4.8.png"> 
 
    Host 2 VTEP – Forwarding table entry
    
@@ -182,7 +182,7 @@ Các bước sau sẽ được thực hiện để VTEP học và ghi vào bản
 
 - Hình sau minh họa cách mà VTEP tìm kiếm thông tin trong forwarding table để gửi unicast trả lời lại từ VM từ VTEP 2:
 
-   ![img](../Images/Tìm hiểu VXLAN/4.9.png)
+   <img src = "../Images/Tìm hiểu VXLAN/4.9.png"> 
 
    - 1) Máy ảo VM MAC2 trên Host 2 đáp trả lại bản tin ARP request bằng cách gửi unicast lại gói tin với địa chỉ MAC đích là địa chỉ MAC1
 
@@ -192,7 +192,7 @@ Các bước sau sẽ được thực hiện để VTEP học và ghi vào bản
 
 - Trên Host 1, VTEP sẽ nhận được gói tin unicast và cũng học được vị trí của VM MAC2 như hình sau: 
 
-   ![img](../Images/Tìm hiểu VXLAN/4.10.png)
+   <img src = "../Images/Tìm hiểu VXLAN/4.10.png"> 
 
    Host 1 VTEP – Forwarding table entry
    
