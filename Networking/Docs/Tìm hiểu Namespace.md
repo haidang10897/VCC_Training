@@ -165,3 +165,6 @@ Ban đầu, khi khởi động hệ thống Linux, bạn sẽ có một namespac
 Xóa namespace sử dụng câu lệnh: 
 
 `ip netns delete <namespace_name>`
+
+# Tham khảo
+https://techzones.me/linux/linux-network-namespace/
