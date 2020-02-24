@@ -6,6 +6,7 @@
 - [Tìm hiểu VXLAN](./Docs/Tìm%20hiểu%20VXLAN.md)  
 - [Tìm hiểu GRE](./Docs/Tìm%20hiểu%20GRE.md)  
 - [Tìm hiểu Namespace](./Docs/Tìm%20hiểu%20Namespace.md)  
+- [Tìm hiểu Switch](./Docs/Tìm%20hiểu%20Switch.md)  
 
 # Reference
 - [Khái niệm VxLAN - Vietnamese Professional](./Reference/Khái%20niệm%20về%20VxLAN%20-%20Vietnamese%20Professional.md)  
