@@ -26,6 +26,7 @@
 ## Lý thuyết
 - [Introduction Networking](./Docs/Introduction_Networking.md)  
 - [ML2 plug in](./Docs/ML2_plug-in.md)  
+- [Phân tích đường đi gói tin](./Docs/II.4.2.%20Phân%20tích%20đường%20đi%20gói%20tin.md)  
 
 ## Thực hành
 - [Cài đặt Neutron](./Docs/II.4.1.%20Cài%20đặt%20Neutron.md)  
