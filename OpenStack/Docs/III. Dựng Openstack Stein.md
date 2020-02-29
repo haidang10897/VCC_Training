@@ -1,24 +1,14 @@
 ﻿# Mục lục
 I. Chuẩn bị môi trường
-
 I.1. Chuẩn bị môi trường mạng
-
 I.2. Cài đặt chung cơ bản
-
 II. Cài đặt các dịch vụ của Openstack
-
 II.1. Keystone
-
 II.2. Glance
-
 II.3. Placement
-
 II.4. Nova
-
 II.5. Neutron
-
 II.6. Horizon
-
 III. Khởi tạo và chạy Instance
 
 
@@ -42,7 +32,7 @@ III. Khởi tạo và chạy Instance
 
 <img src = "../Images/III. Dựng Openstack Stein/Overview/4.png">  
 
-<img src = "../Images/III. Dựng Openstack Stein/Overview/7.JPG">  
+<img src = "../Images/III. Dựng Openstack Stein/Overview/7.png">  
 
 ### I.1.2. Thiết lập VMWARE
 
@@ -111,9 +101,337 @@ III. Khởi tạo và chạy Instance
 - **Ở 2 node, thử ping ra mạng bên ngoài (google.com)**
 
 
- ## I.2.2. Network Time Protocol (NTP)
- ### I.2.2.1. Cài đặt NTP trên Controller node
+## I.2.2. Network Time Protocol (NTP)
+### I.2.2.1. Cài đặt NTP trên Controller node
  
+- **Cài đặt gói**
+	```sh
+	apt install chrony
+	```
+
+- **Sửa file `/etc/chrony/chrony.conf` , thêm dòng sau:**
+	```sh
+	allow 10.0.0.0/24
+	```  
+
+- **Restart dịch vụ**
+	```sh
+	service chrony restart
+	```  
+
+
+### I.2.2.2. Cài đặt NTP trên Compute node
+
+- **Cài đặt gói**
+	```sh
+	apt install chrony
+	```
+
+- **Sửa file `/etc/chrony/chrony.conf` , thêm dòng sau:**
+	```sh
+	server controller iburst
+	```  
+- **Restart dịch vụ**
+	```sh
+	service chrony restart
+	```  
+
+## I.2.3. Cài đặt Ubuntu Package
+***Note: Cài đặt chung trên tất cả các node**
+
+### I.2.3.1. Enable the repository for Ubuntu Cloud Archive. 
+
+- **OpenStack Stein for Ubuntu 18.04 LTS:**
+	```sh
+	add-apt-repository cloud-archive:stein
+	```  
+
+### I.2.3.2. Kết thúc quá trình cài đặt
+- **Update ubuntu**
+	```sh
+	apt update && apt dist-upgrade
+	```  
+
+- **Cài đặt OpenStack client:**
+	```sh
+	apt install python3-openstackclient
+	```  
+
+## I.2.4. Cài đặt SQL database
+**Note: Cài đặt trên Controller node**
+
+### I.2.4.1. Cài đặt và config
+- **Cài đặt gói:**
+	```sh
+	apt install mariadb-server python-pymysql
+	```  
+
+- **Tạo và sửa file `/etc/mysql/mariadb.conf.d/99-openstack.cnf` như sau:**
+	- Bind-address thay bằng IP của controller node, còn lại giữ nguyên.
+		```sh
+		[mysqld]
+		bind-address = 10.0.0.11
+
+		default-storage-engine = innodb
+		innodb_file_per_table = on
+		max_connections = 4096
+		collation-server = utf8_general_ci
+		character-set-server = utf8
+		```  
+
+### I.2.4.2. Kết thúc quá trình cài đặt
+- **Restart dịch vụ mysql:**
+	```sh
+	service mysql restart
+	```  
+- **Cấu hình tài khoản root mysql:**
+	```sh
+	mysql_secure_installation
+	```  
+
+## I.2.5. Message queue
+* **Note: Cấu hình trên Controller node**
+### I.2.5.1. Cài đặt và cấu hình
+- **Cài đặt gói:**
+	```sh
+	apt install rabbitmq-server
+	```  
+
+- **Add thêm `openstack` user:**
+	- Thay password tuỳ chọn, ở đây là `dang`
+		```sh
+		# rabbitmqctl add_user openstack dang
+
+		Creating user "openstack" ...
+		```  
+
+- **Set quyền config, write, read cho user `openstack`:**
+	```sh
+	# rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
+	Setting permissions for user "openstack" in vhost "/" ...
+	```   
+
+## I.2.6. Memcache
+* **Note: Cấu hình trên Controller node**
+### I.2.6.1. Cài đặt và cấu hình
+- **Cài đặt gói:**
+	```sh
+	apt install memcached python-memcache
+	```  
+
+- **Sửa file `/etc/memcached.conf`:**
+	- Sửa dòng `-l 127.0.0.1` thành IP của controller node như sau:
+		```sh
+		-l 10.0.0.11
+		```  
+
+### I.2.6.2. Kết thúc cài đặt
+- **Khởi động lại dịch vụ:**
+	```sh
+	service memcached restart
+	```  
+
+## I.2.7. Etcd
+* **Note: Cấu hình trên Controller node**
+### I.2.7.1. Cài đặt và cấu hình
+- **Cài đặt gói:**
+	```sh
+	apt install etcd
+	```  
+
+- **Sửa file ``/etc/default/etcd`` như sau:**
+	- Thay các dòng 10.0.0.11 bằng địa chỉ IP controller node
+	```sh
+	ETCD_NAME="controller"
+	ETCD_DATA_DIR="/var/lib/etcd"
+	ETCD_INITIAL_CLUSTER_STATE="new"
+	ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+	ETCD_INITIAL_CLUSTER="controller=http://10.0.0.11:2380"
+	ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.0.11:2380"
+	ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.11:2379"
+	ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
+	ETCD_LISTEN_CLIENT_URLS="http://10.0.0.11:2379"
+	```   
+### I.2.7.2. Kết thúc cài đặt
+- **Restart và enable dịch vụ:**
+	```sh
+	# systemctl enable etcd
+	# systemctl restart etcd
+	```  
+
+# II. Cài đặt các dịch vụ của Openstack Stein
+## II.1. Identity service - Keystone
+## II.1.1. Cài đặt và cấu hình
+### II.1.1.1. Chuẩn bị
+- **Đăng nhập mysql với quyền root:**
+	```sh
+	mysql -u root -pdang
+	```  
+- **Tạo database có tên `keystone`:**
+	```sh
+	MariaDB [(none)]> CREATE DATABASE keystone;
+	```  
+
+- **Gán quyền truy cập cho database keystone:** 
+	```sh
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY 'dang';
+	GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'dang';
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone1.png">  
+
+
+### II.1.1.2. Cài đặt và cấu hình
+- Cài đặt Keystone package:
+	```sh
+	apt install keystone
+	```  
+
+- Chỉnh sửa file `/etc/keystone/keystone.conf`
+	- Trong mục `[database]` thêm dòng sau, nhớ thay pass thích hợp và comment mọi dòng còn lại:
+
+		```sh
+		[database]
+		# ...
+		connection = mysql+pymysql://keystone:dang@controller/keystone
+		```  
+	- Trong mục `[section]`, cấu hình cung cấp token là `fernet`:
+		```sh
+		[token]
+		# ...
+		provider = fernet
+		```  
+
+- Đồng bộ database của dịch vụ định danh `keystone`:
+	```sh
+	# su -s /bin/sh -c "keystone-manage db_sync" keystone
+	```  
+
+- Cấu hình key repository của `fernet`:
+	```sh
+	# keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+	# keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+	```  
+
+- Bootsrap `Keystone`, nhớ thay password:
+	```sh
+	# keystone-manage bootstrap --bootstrap-password dang --bootstrap-admin-url http://controller:5000/v3/ --bootstrap-internal-url http://controller:5000/v3/ --bootstrap-public-url http://controller:5000/v3/ --bootstrap-region-id RegionOne
+	```  
+
+### II.1.1.3. Cấu hình Apache HTTP server
+- Chỉnh sửa file `/etc/apache2/apache2.conf` như sau:
+	```sh
+	ServerName controller
+	```  
+
+### II.1.1.4. SSL
+- Đây là cấu hình tuỳ chọn để thiết lập giao thức an toàn kết nối đến web server. Bài này sẽ không có.
+
+### II.1.1.5. Kết thúc cài đặt
+- Khởi động lại dịch vụ apache:
+	```sh
+	# service apache2 restart
+	```  
+
+- Cấu hình tài khoản admin bằng cách set biến môi trường, nhớ thay tài khoản bằng tài khoản trong keystone-manage:
+	```sh
+	export OS_USERNAME=admin
+	export OS_PASSWORD=dang
+	export OS_PROJECT_NAME=admin
+	export OS_USER_DOMAIN_NAME=Default
+	export OS_PROJECT_DOMAIN_NAME=Default
+	export OS_AUTH_URL=http://controller:5000/v3
+	export OS_IDENTITY_API_VERSION=3
+	```  
+	
+## II.1.2. Tạo domain, projects, user, và role
+### II.1.2.1. Tạo domain
+- **Tạo domain tên `example` bằng lệnh sau, đây cũng chính là lệnh để tạo domain mới:**
+	```sh
+	openstack domain create --description "An Example Domain" example
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone2.png">  
+
+***NOTE: Trên là domain để ví dụ, bài này sẽ dùng domain default đã được tạo trước rồi.***
+
+### II.1.2.2. Tạo project
+- Xuyên suốt bài này, ta sẽ dùng project tên `service` để làm thực hành. Tạo bằng lệnh sau:
+	 ```sh
+	$ openstack project create --domain default --description "Service Project" service
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone3.png">  
+
+### II.1.2.3. Tạo user, role
+Dưới đây là ví dụ về tạo user, tạo roles và gán vào user với project:
+- Tạo project `myproject`:
+	```sh
+	$ openstack project create --domain default --description "Demo Project" myproject
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone4.png">  
+
+- Tạo user `myuser`:
+	```sh
+	$ openstack user create --domain default --password-prompt myuser
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone5.png">  
+
+- Tạo role `myroles`:
+	```sh
+	openstack role create myrole
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone6.png">  
+
+- Add role `myrole` vào user `myuser` và project `myproject`:
+	```sh
+	openstack role add --project myproject --user myuser myrole
+	```  
+
+## II.1.3. Kiểm tra vận hành
+- Unset biến môi trường
+	```sh
+	unset OS_AUTH_URL OS_PASSWORD
+	```  
+
+- Lấy token với tư cách là user `admin`
+	```sh
+	openstack --os-auth-url http://controller:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone7.png">  
+
+- Lấy token vơi tư cách là user `myuser`:
+	```sh
+	openstack --os-auth-url http://controller:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name myproject --os-username myuser token issue
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Keystone/keystone8.png">  
+
+## II.1.4. Tạo file chứa biến môi trường
+### II.1.4.1. Tạo script
+- Tạo file `admin-openrc` chứa nội dung sau:
+	```sh
+	export OS_USERNAME=admin
+	export OS_PASSWORD=dang
+	export OS_PROJECT_NAME=admin
+	export OS_USER_DOMAIN_NAME=Default
+	export OS_PROJECT_DOMAIN_NAME=Default
+	export OS_AUTH_URL=http://controller:5000/v3
+	export OS_IDENTITY_API_VERSION=3
+	```  
+
+### II.1.4.2. Dùng script
+- Load file `admin-openrc`:
+	```sh
+	#. admin-openrc
+	```  
+
+- Xem token:
+	```sh
+	$ openstack token issue
+	```  
+
+## II.2. Image Service - Glance
+## II.2.1. Cái đặt và cấu hình
+
+
 
 
 
