@@ -429,11 +429,156 @@ Dưới đây là ví dụ về tạo user, tạo roles và gán vào user với
 	```  
 
 ## II.2. Image Service - Glance
-## II.2.1. Cái đặt và cấu hình
+## II.2.1. Cài đặt và cấu hình
+### II.2.1.1. Chuẩn bị
+- **Đăng nhập Mysql với quyền root**
+	```sh
+	mysql -u root -pdang
+	```  
 
+- **Tạo database có tên `glance`**
+	```sh
+	MariaDB [(none)]> CREATE DATABASE glance;
+	```  
 
+- **Gán quyền access cho database `glance`. NHỚ THAY PASSWORD**
+	```sh
+	MariaDB [(none)]> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY 'dang';
+	MariaDB [(none)]> GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'dang';
+	```  
 
+- **Load file `admin-openrc` để lấy quyền admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Tạo user `glance`**
+	```sh
+	$ openstack user create --domain default --password-prompt glance
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Glance/glance1.png">   
 
+- **Thêm role `admin` cho user `glance` và project `service`**  
+	```sh
+	$ openstack role add --project service --user glance admin
+	```  
+- **Tạo service `glance`**
+	```sh
+	$ openstack service create --name glance --description "OpenStack Image" image
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Glance/glance2.png">   
+	
+- **Tạo các Endpoint cho service `glance`**
+	```sh
+	$ openstack endpoint create --region RegionOne image public http://controller:9292
+	$ openstack endpoint create --region RegionOne image internal http://controller:9292
+	$ openstack endpoint create --region RegionOne image admin http://controller:9292
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Glance/glance3.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Glance/glance4.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Glance/glance5.png">   
+
+### II.2.1.2. Cài đặt và cấu hình
+- **Cài đặt Glance package**
+```sh
+# apt install glance
+```  
+
+- **Sửa file `/etc/glance/glance-api.conf`**
+	- *Trong mục `[database]`, cấu hình truy cập đến database. NHỚ THAY PASS*
+		```sh
+		[database]
+		# ...
+		connection = connection = mysql+pymysql://glance:dang@controller/glance
+		```  
+
+	- *Trong mục `[keystone_authtoken]` và `[paste_deploy]`, cấu hình truy cập dịnh vụ định danh keystone. NHỚ THAY PASS*
+		```sh
+		[keystone_authtoken]
+		# ...
+		www_authenticate_uri = http://controller:5000
+		auth_url = http://controller:5000
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = Default
+		user_domain_name = Default
+		project_name = service
+		username = glance
+		password = dang
+
+		[paste_deploy]
+		# ...
+		flavor = keystone
+		```  
+	-	*Trong mục`[glance_store]`, cấu hình vị trí lưu trữ image*
+		```sh
+		[glance_store]
+		# ...
+		stores = file,http
+		default_store = file
+		filesystem_store_datadir = /var/lib/glance/images/
+		```  
+
+- **Sửa file `/etc/glance/glance-registry.conf`**
+	- *Trong mục `[database]`, cấu hình truy cập đến database. NHỚ THAY PASS*
+		```sh
+		[database]
+		# ...
+		connection = mysql+pymysql://glance:dang@controller/glance
+		```  
+
+	-	*Trong mục `[keystone_authtoken]` và `[paste_deploy]`, cấu hình truy cập dịch vụ định danh. Nhớ thay pass là pass truy cập vào dịnh vụ định danh keystone của user `glance`. Comment tất cả dòng cấu hình khác*
+		```sh
+		[keystone_authtoken]
+		# ...
+		www_authenticate_uri = http://controller:5000
+		auth_url = http://controller:5000
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = Default
+		user_domain_name = Default
+		project_name = service
+		username = glance
+		password = dang
+
+		[paste_deploy]
+		# ...
+		flavor = keystone
+		```  
+- **Đồng bộ database dịch vụ Image - Glance**
+	```sh
+	# su -s /bin/sh -c "glance-manage db_sync" glance
+	```  
+### II.2.1.3. Kết thúc cài đặt
+- **Khởi động lại dịch vụ Image**
+	```sh
+	# service glance-registry restart
+	# service glance-api restart
+	```  
+
+## II.2.2. Kiểm tra vận hành
+- Truy cập Openstack với tư cách admin
+	```sh
+	$ . admin-openrc
+	```  
+- Download file image
+	```sh
+	$ wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+	```  
+- Upload image vào dịch vụ Image Glance với disk format là `qcow2`, `bare container format`, và `public` để tất cả các project có thể nhìn thấy.
+	```sh
+	$ openstack image create "cirros" --file cirros-0.4.0-x86_64-disk.img --disk-format qcow2 --container-format bare --public
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Glance/glance6.png">   
+
+- Xem list image để biết đã upload thành công chưa
+	```sh
+	$ openstack image list
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Glance/glance7.png">   
+
+# II.3. Dịch vụ Placement
 
 
 
