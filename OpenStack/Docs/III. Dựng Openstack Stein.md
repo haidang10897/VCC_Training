@@ -579,6 +579,285 @@ Dưới đây là ví dụ về tạo user, tạo roles và gán vào user với
 	<img src = "../Images/III. Dựng Openstack Stein/Glance/glance7.png">   
 
 # II.3. Dịch vụ Placement
+Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử dụng kho cung cấp tài nguyên. Được dùng cho các dịch vụ khác, đặc biệt là NOVA.
+>The placement service provides an [HTTP API](https://developer.openstack.org/api-ref/placement/) used to track resource provider inventories and usages.
+
+## II.3.1. Cài đặt và cấu hình
+### II.3.1.1. Chuẩn bị
+- **Tạo database**
+	- *Đăng nhập mysql với tư cách root* 
+		```sh
+		$ mysql -u root -pdang
+		```  
+
+	- *Tạo database tên `placement`*
+		```sh
+		MariaDB [(none)]> CREATE DATABASE placement;
+		```  
+
+	- *Cấp quyền access vào database, nhớ thay password*
+		```sh
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON placement.* TO 'placement'@'localhost' \
+		 IDENTIFIED BY 'dang';
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON placement.* TO 'placement'@'%' \
+		 IDENTIFIED BY 'dang';
+		```  
+
+<img src = "../Images/III. Dựng Openstack Stein/Placement/placement1.png">   
 
 
+- **Cấu hình user và Endpoint**
+	- *Truy cập Openstack với tư cách admin*
+		```sh
+		$ . admin-openrc
+		```  
+	- *Tạo user `placement`*
+		```sh
+		$ openstack user create --domain default --password-prompt placement
+		```  
+	- *Add user `placement` vào project `service` với role `admin`*
+		```sh
+		$ openstack role add --project service --user placement admin
+		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Placement/placement2.png">   
+		
+	- *Tạo service `placement`*
+		```sh
+		openstack service create --name placement --description "Placement API" placement
+		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Placement/placement3.png">   
+		
+	- *Tạo các Endpoint cho service `placement`* 
+		```sh
+		openstack endpoint create --region RegionOne placement public http://controller:8778
+		openstack endpoint create --region RegionOne placement internal http://controller:8778
+		openstack endpoint create --region RegionOne placement admin http://controller:8778
+		```  
+		
+<img src = "../Images/III. Dựng Openstack Stein/Placement/placement4.png">  
+		
+<img src = "../Images/III. Dựng Openstack Stein/Placement/placement5.png">   
+		
+<img src = "../Images/III. Dựng Openstack Stein/Placement/placement6.png">   
+		
+### II.3.1.2. Cài đặt và cấu hình
+- **Cài đặt gói `Placement`**
+	```sh
+	# apt install placement-api
+	```  
+- **Sửa file `/etc/placement/placement.conf`**
+	- *Trong `[placement_database]`, cấu hình truy cập database, nhớ thay pass.*
+		```sh
+		[placement_database]
+		# ...
+		connection = mysql+pymysql://placement:dang@controller/placement
+		```  
+	- *Trong `[api]` và `[keystone_authtoken]`, cấu hình truy cập dịch vụ định danh `keystone`, nhớ thay pass và comment mọi dòng khác.*
+		```sh
+		[api]
+		# ...
+		auth_strategy = keystone
 
+		[keystone_authtoken]
+		# ...
+		auth_url = http://controller:5000/v3
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = Default
+		user_domain_name = Default
+		project_name = service
+		username = placement
+		password = dang
+		```  
+- **Đồng bộ database `placement`**
+	```sh
+	# su -s /bin/sh -c "placement-manage db sync" placement
+	```  
+
+### II.3.1.3. Kết thúc cài đặt
+- **Khởi động lại dịch vụ apache**
+	```sh
+	# service apache2 restart
+	```  
+## II.3.2. Kiểm tra vận hành
+
+- **Truy cập openstack với tư cách admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Kiểm tra tình trạng**
+	```sh
+	$ placement-status upgrade check
+	```  
+<img src = "../Images/III. Dựng Openstack Stein/Placement/placement7.png">   
+
+# II.4. Compute Service - NOVA
+
+## II.4.1. Cài đặt và cấu hình Nova trên Controller node
+### II.4.1.1. Chuẩn bị
+- **Tạo database**
+	- *Đăng nhập mysql với tư cách root*
+		```sh
+		$ mysql -u root -pdang
+		```  
+	- *Tạo  database `nova_api`, `nova`, và `nova_cell0`*
+		```sh
+		MariaDB [(none)]> CREATE DATABASE nova_api;
+		MariaDB [(none)]> CREATE DATABASE nova;
+		MariaDB [(none)]> CREATE DATABASE nova_cell0;
+		```  
+	- *Gán quyền truy cập vào database, nhớ thay pass*
+		```sh
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY 'dang';
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY 'dang';
+
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY 'dang';
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'dang';
+
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY 'dang';
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'dang';
+		```  
+
+- **Truy cập Openstack với tư cách admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Tạo các chứng chỉ của `compute` service**
+	- *Tạo user `nova`*
+		```sh
+		$ openstack user create --domain default --password-prompt nova
+		```  
+		
+	- *Gán role `admin` cho user `nova`*
+		```sh
+		$ openstack role add --project service --user nova admin
+		```  
+
+	- *Tạo dịch vụ `nova`*
+		```sh
+		$ openstack service create --name nova --description "OpenStack Compute" compute
+		```  
+
+- Tạo các Endpoint cho service `Nova`
+	```sh
+	openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1
+	openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1
+	openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
+	```  
+
+### II.4.1.2. Cài đặt và cấu hình
+- **Cài đặt các gói**
+	```sh
+	# apt install nova-api nova-conductor nova-consoleauth nova-novncproxy nova-scheduler
+	```  
+- **Sửa file `/etc/nova/nova.conf`**
+	- *Trong mục `[api_database]` và `[database]`, cấu hình để truy cập database, nhớ thay pass*
+		```sh
+		[api_database]
+		# ...
+		connection = mysql+pymysql://nova:dang@controller/nova_api
+
+		[database]
+		# ...
+		connection = mysql+pymysql://nova:dang@controller/nova
+		```  
+	- *Trong mục `[DEFAULT]`, cấu hình để truy cập `rabbitmq message queue`. Nhớ thay pass là pass của user `openstack` trong rabbitmq đã tạo từ đầu.*
+		```sh
+		[DEFAULT]
+		# ...
+		transport_url = rabbit://openstack:dang@controller
+		```  
+	- *Trong `[api]` và `[keystone_authtoken]`, cấu hình truy cập dịch vụ định danh `keystone`. Nhớ thay pass là pass của user `nova` trong dịch vụ định danh keystone. Comment tất cả dòng cấu hình khác*
+		```sh
+		[api]
+		# ...
+		auth_strategy = keystone
+
+		[keystone_authtoken]
+		# ...
+		auth_url = http://controller:5000/v3
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = Default
+		user_domain_name = Default
+		project_name = service
+		username = nova
+		password = dang
+		```  
+	- *Trong mục `[DEFAULT]`, thay IP là IP của controller node. Và mở hỗ trợ cho dịch vụ mạng `neutron`*
+		```sh
+		[DEFAULT]
+		# ...
+		my_ip = 10.0.0.11
+		use_neutron = true
+		firewall_driver = nova.virt.firewall.NoopFirewallDriver
+		```  
+
+	- *Trong mục `[vnc]`, cấu hình VNC proxy để dùng để dùng địa chỉ IP quản lý của controller node*
+		```sh
+		[vnc]
+		enabled = true
+		# ...
+		server_listen = $my_ip
+		server_proxyclient_address = $my_ip
+		```  
+	- *Trong mục `[glance]`, cấu hình vị trí API của dịch vụ image `glance`*
+		```sh
+		[glance]
+		# ...
+		api_servers = http://controller:9292
+		```  
+	- *Trong mục `[oslo_concurrency]`, cấu hình lock path*
+		```sh
+		[oslo_concurrency]
+		# ...
+		lock_path = /var/lib/nova/tmp
+		```  
+
+	- *Để tránh bug, xoá dòng `log_dir` trong mục `[DEFAULT]`*
+	- *Trong mục `[placement]`, cấu hình truy cập đến dịch vụ Placement. Nhớ thay pass là của user placement đã cấu hình trong phần `Dịch VỤ PLACEMENT`*
+		```sh
+		[placement]
+		# ...
+		region_name = RegionOne
+		project_domain_name = Default
+		project_name = service
+		auth_type = password
+		user_domain_name = Default
+		auth_url = http://controller:5000/v3
+		username = placement
+		password = dang
+		```  
+
+- **Đồng bộ database `nova-api`**
+	```sh
+	# su -s /bin/sh -c "nova-manage api_db sync" nova
+	```  
+- **Đăng ký database `cell0`**
+	```sh
+	# su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+	```  
+- **Tạo ô (cell) `cell1`**
+	```sh
+	# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+	```  
+- **Đồng bộ database `nova`**
+	```sh
+	# su -s /bin/sh -c "nova-manage db sync" nova
+	```  
+- **Đảm bảo nova `cell0` và `cell1` đã đăng ký đúng hay chưa**
+	```sh
+	# su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
+	```  
+### II.4.1.3. Kết thúc cài đặt
+- **Restart lại các dịch vụ**
+	```sh
+	# service nova-api restart
+	# service nova-consoleauth restart
+	# service nova-scheduler restart
+	# service nova-conductor restart
+	# service nova-novncproxy restart
+	```  
+
+## II.4.2. Cài đặt và cấu hình Nova trên Compute node
+### II.4.2.1. Cài đặt và cấu hình
