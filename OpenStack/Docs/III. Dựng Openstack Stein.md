@@ -706,6 +706,8 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		MariaDB [(none)]> CREATE DATABASE nova;
 		MariaDB [(none)]> CREATE DATABASE nova_cell0;
 		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Nova/nova1.png">   
+
 	- *Gán quyền truy cập vào database, nhớ thay pass*
 		```sh
 		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY 'dang';
@@ -717,6 +719,7 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY 'dang';
 		MariaDB [(none)]> GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'dang';
 		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Nova/nova2.png">   
 
 - **Truy cập Openstack với tư cách admin**
 	```sh
@@ -727,7 +730,8 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		```sh
 		$ openstack user create --domain default --password-prompt nova
 		```  
-		
+		<img src = "../Images/III. Dựng Openstack Stein/Nova/nova3.png">   
+
 	- *Gán role `admin` cho user `nova`*
 		```sh
 		$ openstack role add --project service --user nova admin
@@ -737,13 +741,21 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		```sh
 		$ openstack service create --name nova --description "OpenStack Compute" compute
 		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Nova/nova4.png">   
 
-- Tạo các Endpoint cho service `Nova`
+- **Tạo các Endpoint cho service `Nova`**
 	```sh
 	openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1
 	openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1
 	openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
 	```  
+<img src = "../Images/III. Dựng Openstack Stein/Nova/nova5.png">   
+	
+<img src = "../Images/III. Dựng Openstack Stein/Nova/nova6.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Nova/nova7.png">   
+
+
 
 ### II.4.1.2. Cài đặt và cấu hình
 - **Cài đặt các gói**
@@ -849,6 +861,8 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 	```sh
 	# su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova8.png">   
+	
 ### II.4.1.3. Kết thúc cài đặt
 - **Restart lại các dịch vụ**
 	```sh
@@ -861,3 +875,413 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 
 ## II.4.2. Cài đặt và cấu hình Nova trên Compute node
 ### II.4.2.1. Cài đặt và cấu hình
+- **Cài đặt gói `nova-compute`**
+	```sh
+	# apt install nova-compute
+	```  
+- **Sửa file `/etc/nova/nova.conf`**
+	- *Trong mục`[DEFAULT]`, cấu hình truy cập `RabbitMQ message queue`. Nhớ thay pass của user `openstack` trong rabbitmq tạo lục đầu tiên.*
+		```sh
+		[DEFAULT]
+		# ...
+		transport_url = rabbit://openstack:dang@controller
+		```  
+	- *Trong mục `[api]` và `[keystone_authtoken]`, cấu hình truy cập dịnh vụ định danh `keystone`. Nhớ thay pass của user `nova` trong `keystone`*
+		```sh
+		[api]
+		# ...
+		auth_strategy = keystone
+
+		[keystone_authtoken]
+		# ...
+		auth_url = http://controller:5000/v3
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = Default
+		user_domain_name = Default
+		project_name = service
+		username = nova
+		password = dang
+		```  
+
+	- *Trong mục `[DEFAULT]`, cấu hình địa chỉ IP của máy `Compute node` và mở hỗ trợ dịch vụ network `neutron`*
+		```sh
+		[DEFAULT]
+		# ...
+		my_ip = 10.0.0.31
+		```  
+
+	- *Trong mục `[VNC]`, cấu hình truy cập từ xa*
+		```sh
+		[vnc]
+		# ...
+		enabled = true
+		server_listen = 0.0.0.0
+		server_proxyclient_address = $my_ip
+		novncproxy_base_url = http://controller:6080/vnc_auto.html
+		```  
+
+	- *Trong mục `[glance]`, cấu hình vị trí của API dịch vụ Image `glance`*
+		```sh
+		[glance]
+		# ...
+		api_servers = http://controller:9292
+		```  
+	- *Trong mục `[oslo_concurrency]`, cấu hình lock path*
+		```sh
+		[oslo_concurrency]
+		# ...
+		lock_path = /var/lib/nova/tmp
+		```  
+	- *Trong mục `[placement]`, cấu hình Placement API. Nhớ thay pass là pass của user `placement` trong `keystone`*
+		```sh
+		[placement]
+		# ...
+		region_name = RegionOne
+		project_domain_name = Default
+		project_name = service
+		auth_type = password
+		user_domain_name = Default
+		auth_url = http://controller:5000/v3
+		username = placement
+		password = dang
+		```  
+
+### II.4.2.2. Kết thúc cài đặt
+- **Kiểm tra `Compute node` có hỗ trợ ảo hoá không.**
+	```sh
+	$ egrep -c '(vmx|svm)' /proc/cpuinfo
+	```  
+- **Sửa mục `[libvirt]` trong `/etc/nova/nova-compute.conf`** 
+	```sh
+	[libvirt]
+	# ...
+	virt_type = qemu
+	```  
+- **Khởi động lại dịch vụ `nova-compute`**
+	```sh
+	# service nova-compute restart
+	```  
+
+### II.4.2.3. Thêm Compute node vào Cell Database
+- **Truy cập Openstack với tư cách admin**
+	```sh
+	$ . admin-openrc
+	```  
+
+- **Kiểm tra trạng thái dịch vụ `nova-compute`**
+	```sh
+	$ openstack compute service list --service nova-compute
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova9.png">   
+	
+- **Tìm kiếm các `compute host`**
+	```sh
+	# su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova10.png">   
+
+## II.4.3. Kiểm tra vận hành
+- **Truy cập Openstack với tư cách admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Hiển thị danh sách `compute service`**
+	```sh
+	$ openstack compute service list
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova11.png">   
+- **Hiển thị danh sách `API ENDPOINT` trong dịch vụ định danh `keystone` để đảm bảo xác nhận kết nối thành công tới dịch vụ định danh**
+	```sh
+	$ openstack catalog list
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova12.png">   
+- **Hiển thị danh sách `image` để đảm bảo xác nhận kết nối thành công tới dịch vụ image**
+	```sh
+	$ openstack image list
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova13.png">   
+- **Kiểm tra xem `cell` và `placement API` hoạt động tốt không**
+	```sh
+	# nova-status upgrade check
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Nova/nova14.png">   
+
+# II.5. Network Service - Neutron
+## II.5.1. Cài đặt và cấu hình trên `Controller node`
+### II.5.1.1. Chuẩn bị
+- **Tạo `database`**
+	- *Truy cập mysql với tư cách `root`*
+		```sh
+		$ mysql -u root -p
+		```  
+	- *Tạo database `neutron`*
+		```sh
+		MariaDB [(none)] CREATE DATABASE neutron;
+		```   
+	- *Gán quyền truy cập database `neutron`, nhớ thay pass*
+		```sh
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' \
+		 IDENTIFIED BY 'dang';
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' \
+		 IDENTIFIED BY 'dang';
+		```  
+
+- **Truy cập Openstack với quyền admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Tạo các chứng chỉ cho dịch vụ**
+	- *Tạo user `neutron`*
+		```sh
+		$ openstack user create --domain default --password-prompt neutron
+		```  
+	- *Add role `admin` cho user `neutron`*
+		```sh
+		$ openstack role add --project service --user neutron admin
+		```  
+	- *Tạo dịch vụ `neutron`*
+		```sh
+		$ openstack service create --name neutron --description "OpenStack Networking" network
+		```  
+
+- **Tạo các `API Endpoint` cho dịch vụ network `neutron`**
+	```sh
+	openstack endpoint create --region RegionOne network public http://controller:9696
+	openstack endpoint create --region RegionOne network internal http://controller:9696
+	openstack endpoint create --region RegionOne network admin http://controller:9696
+	```  
+### II.5.1.2. Cấu hình Self-service Network
+#### II.5.1.2.1. Cài đặt các gói
+```sh
+# apt install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
+```  
+#### II.5.1.2.2. Cấu hình các thành phần của server
+- Sửa file `/etc/neutron/neutron.conf`
+	- Trong mục`[database]`, cấu hình truy cập database. Nhớ thay pass
+		```sh
+		[database]
+		# ...
+		connection = mysql+pymysql://neutron:dang@controller/neutron
+		```  
+
+	- Trong mục `[DEFAULT]`, kích hoạt Modular Layer 2 (ML2) plug-in, router service, và overlapping IP address
+		```sh
+		[DEFAULT]
+		# ...
+		core_plugin = ml2
+		service_plugins = router
+		allow_overlapping_ips = true
+		```  
+	- Trong mục `[DEFAULT]`, cấu hình truy cập ``RabbitMQ` message queue`. Nhớ thay pass
+		```sh
+		[DEFAULT]
+		# ...
+		transport_url = rabbit://openstack:dang@controller
+		```  
+
+	- Trong mục `[DEFAULT]` và `[keystone_authtoken]`, cấu hình truy cập dịnh vụ định danh. Nhớ thay pass
+		```sh
+		[DEFAULT]
+		# ...
+		auth_strategy = keystone
+
+		[keystone_authtoken]
+		# ...
+		www_authenticate_uri = http://controller:5000
+		auth_url = http://controller:5000
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = default
+		user_domain_name = default
+		project_name = service
+		username = neutron
+		password = dang
+		```  
+
+	- Trong mục `[DEFAULT]` và `[nova]`, cấu hình mạng để thông báo cho `compute` biết là có thay đổi về topo mạng. Nhớ thay pass user `nova` trong `keystone`
+		```sh
+		[DEFAULT]
+		# ...
+		notify_nova_on_port_status_changes = true
+		notify_nova_on_port_data_changes = true
+
+		[nova]
+		# ...
+		auth_url = http://controller:5000
+		auth_type = password
+		project_domain_name = default
+		user_domain_name = default
+		region_name = RegionOne
+		project_name = service
+		username = nova
+		password = dang
+		```  
+	- Trong `[oslo_concurrency]`, cấu hình lock path
+		```sh
+		[oslo_concurrency]
+		# ...
+		lock_path = /var/lib/neutron/tmp
+		```    
+
+#### II.5.1.2.3. Cấu hình ML2 Plugin
+- **Sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`**
+	- Trong mục `[ml2]`, kích hoạt flat, VLAN, và VXLAN
+		```sh
+		[ml2]
+		# ...
+		type_drivers = flat,vlan,vxlan
+		```  
+	- Trong mục `[ml2]`, kích hoạt `VXLAN self-service network`
+		```sh
+		[ml2]
+		# ...
+		tenant_network_types = vxlan
+		```  
+	- Trong mục `[ml2]`, kích hoạt Linux bridge và layer-2 population
+		```sh
+		[ml2]
+		# ...
+		mechanism_drivers = linuxbridge,l2population
+		```  
+		* **LƯU Ý: Config xong mà xoá giá trị trong `type_drivers` sẽ gây lỗi hệ thống**
+	- Trong mục `[ml2]`, kích hoạt `port security extension driver`
+		```sh
+		[ml2]
+		# ...
+		extension_drivers = port_security
+		```  
+	- Trong mục `[ml2_type_flat]`, cấu hình `provider virtual network` là `flat network`
+		```sh
+		[ml2_type_flat]
+		# ...
+		flat_networks = provider
+		```  
+	- Trong mục `[ml2_type_vxlan]`, cấu hình độ dài của vxlan trong `self-service networ`
+		```sh
+		[ml2_type_vxlan]
+		# ...
+		vni_ranges = 1:1000
+		```  
+	- Trong mục `[securitygroup]`, mở `ipset`  để tăng tính an toàn
+		```sh
+		[securitygroup]
+		# ...
+		enable_ipset = true
+		```  
+
+#### II.5.1.2.4. Cấu hình Linux bridge agent
+- **Sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`**
+	- Trong mục `[linux_bridge]`, map `provider virtual network` vào `provider physical network interface`
+		```sh
+		[linux_bridge]
+		physical_interface_mappings = provider:ens38
+		```  
+	- Trong mục `[vxlan]`, kích hoạt VXLAN, cấu hình IP address của physical network interface và kích hoạt layer-2 population
+		```sh
+		[vxlan]
+		enable_vxlan = true
+		local_ip = 10.0.0.11
+		l2_population = true
+		```  
+
+	- Trong mục `[securitygroup]`, kích hoạt security group và firewall
+		```sh
+		[securitygroup]
+		# ...
+		enable_security_group = true
+		firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+		```  
+	- Kích hoạt hỗ trợ `networking bridge`
+		```sh
+		modprobe br_netfilter
+		```  
+	- Kiểm tra hỗ trợ `networking bridge`
+		```sh
+		sysctl net.bridge.bridge-nf-call-iptables
+		sysctl net.bridge.bridge-nf-call-ip6tables
+		```  
+		
+#### II.5.1.2.4. Cấu hình layer-3 agent
+Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
+- Sửa file `/etc/neutron/l3_agent.ini`
+	- Trong mục `[DEFAULT]`, cấu hình interface driver là `linux bridge`
+		```sh
+		[DEFAULT]
+		# ...
+		interface_driver = linuxbridge
+		```  
+
+#### II.5.1.2.5. Cấu hình DHCP agent
+- Sửa file `/etc/neutron/dhcp_agent.ini`
+	- Sửa mục `[DEFAULT]` như sau:
+		```sh
+		[DEFAULT]
+		# ...
+		interface_driver = linuxbridge
+		dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+		enable_isolated_metadata = true
+		```  
+
+### II.5.1.3. Cấu hình metadata agent
+- **Sửa file `/etc/neutron/metadata_agent.ini`**
+	- Trong mục `[DEFAULT]`, cấu hình metadata và khoá chia sẻ. Nhớ thay khoá
+		```sh
+		[DEFAULT]
+		# ...
+		nova_metadata_host = controller
+		metadata_proxy_shared_secret = dang
+		```  
+
+### II.5.1.4. Cấu hình Compute service để dùng Neutron
+- **Sửa file `/etc/nova/nova.conf`**
+	- Trong mục `[neutron]`, sửa như sau, nhớ thay pass của `neutron` và khoá chia sẻ bí mật bên trên:
+		```sh
+		[neutron]
+		# ...
+		url = http://controller:9696
+		auth_url = http://controller:5000
+		auth_type = password
+		project_domain_name = default
+		user_domain_name = default
+		region_name = RegionOne
+		project_name = service
+		username = neutron
+		password = dang
+		service_metadata_proxy = true
+		metadata_proxy_shared_secret = dang
+		```  
+
+### II.5.1.5. Kết thúc cài đặt
+- **Đồng bộ Database**
+	```sh
+	# su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+	```  
+
+- **Khởi động lại `nova api`**
+	```sh
+	# service nova-api restart
+	```  
+
+- **Khởi động lại các dịch vụ neutron**
+	```sh
+	# service neutron-server restart
+	# service neutron-linuxbridge-agent restart
+	# service neutron-dhcp-agent restart
+	# service neutron-metadata-agent restart
+	```  
+
+- **Khởi động lại dịch vụ layer 3 agent**
+	```sh
+	# service neutron-l3-agent restart
+	```  
+
+## II.5.2. Cài đặt và cấu hình trên `Compute node`
+
+### II.5.2.1. Cài đặt gói
+- **Cài đặt các gói cần thiết trên `compute`**
+	```sh
+	# apt install neutron-linuxbridge-agent
+	```  
+### II.5.2.2. Cấu hình các thành phần cơ bản
+-  **Sửa file `/etc/neutron/neutron.conf`**
