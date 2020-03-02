@@ -1026,6 +1026,7 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		MariaDB [(none)]> GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' \
 		 IDENTIFIED BY 'dang';
 		```  
+<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron1.png">   
 
 - **Truy cập Openstack với quyền admin**
 	```sh
@@ -1036,6 +1037,8 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		```sh
 		$ openstack user create --domain default --password-prompt neutron
 		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron2.png">   
+
 	- *Add role `admin` cho user `neutron`*
 		```sh
 		$ openstack role add --project service --user neutron admin
@@ -1044,6 +1047,7 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		```sh
 		$ openstack service create --name neutron --description "OpenStack Networking" network
 		```  
+		<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron3.png">   
 
 - **Tạo các `API Endpoint` cho dịch vụ network `neutron`**
 	```sh
@@ -1051,21 +1055,28 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 	openstack endpoint create --region RegionOne network internal http://controller:9696
 	openstack endpoint create --region RegionOne network admin http://controller:9696
 	```  
+<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron4.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron5.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron6.png">   
+
+
 ### II.5.1.2. Cấu hình Self-service Network
 #### II.5.1.2.1. Cài đặt các gói
 ```sh
 # apt install neutron-server neutron-plugin-ml2 neutron-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
 ```  
 #### II.5.1.2.2. Cấu hình các thành phần của server
-- Sửa file `/etc/neutron/neutron.conf`
-	- Trong mục`[database]`, cấu hình truy cập database. Nhớ thay pass
+- **Sửa file `/etc/neutron/neutron.conf`**
+	- *Trong mục`[database]`, cấu hình truy cập database. Nhớ thay pass*
 		```sh
 		[database]
 		# ...
 		connection = mysql+pymysql://neutron:dang@controller/neutron
 		```  
 
-	- Trong mục `[DEFAULT]`, kích hoạt Modular Layer 2 (ML2) plug-in, router service, và overlapping IP address
+	- *Trong mục `[DEFAULT]`, kích hoạt Modular Layer 2 (ML2) plug-in, router service, và overlapping IP address*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1073,14 +1084,14 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		service_plugins = router
 		allow_overlapping_ips = true
 		```  
-	- Trong mục `[DEFAULT]`, cấu hình truy cập ``RabbitMQ` message queue`. Nhớ thay pass
+	- *Trong mục `[DEFAULT]`, cấu hình truy cập ``RabbitMQ` message queue`. Nhớ thay pass*
 		```sh
 		[DEFAULT]
 		# ...
 		transport_url = rabbit://openstack:dang@controller
 		```  
 
-	- Trong mục `[DEFAULT]` và `[keystone_authtoken]`, cấu hình truy cập dịnh vụ định danh. Nhớ thay pass
+	- *Trong mục `[DEFAULT]` và `[keystone_authtoken]`, cấu hình truy cập dịnh vụ định danh. Nhớ thay pass*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1099,7 +1110,7 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		password = dang
 		```  
 
-	- Trong mục `[DEFAULT]` và `[nova]`, cấu hình mạng để thông báo cho `compute` biết là có thay đổi về topo mạng. Nhớ thay pass user `nova` trong `keystone`
+	- *Trong mục `[DEFAULT]` và `[nova]`, cấu hình mạng để thông báo cho `compute` biết là có thay đổi về topo mạng. Nhớ thay pass user `nova` trong `keystone`*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1117,7 +1128,7 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		username = nova
 		password = dang
 		```  
-	- Trong `[oslo_concurrency]`, cấu hình lock path
+	- *Trong `[oslo_concurrency]`, cấu hình lock path*
 		```sh
 		[oslo_concurrency]
 		# ...
@@ -1126,44 +1137,44 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 
 #### II.5.1.2.3. Cấu hình ML2 Plugin
 - **Sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`**
-	- Trong mục `[ml2]`, kích hoạt flat, VLAN, và VXLAN
+	- *Trong mục `[ml2]`, kích hoạt flat, VLAN, và VXLAN*
 		```sh
 		[ml2]
 		# ...
 		type_drivers = flat,vlan,vxlan
 		```  
-	- Trong mục `[ml2]`, kích hoạt `VXLAN self-service network`
+	- *Trong mục `[ml2]`, kích hoạt `VXLAN self-service network`*
 		```sh
 		[ml2]
 		# ...
 		tenant_network_types = vxlan
 		```  
-	- Trong mục `[ml2]`, kích hoạt Linux bridge và layer-2 population
+	- *Trong mục `[ml2]`, kích hoạt Linux bridge và layer-2 population*
 		```sh
 		[ml2]
 		# ...
 		mechanism_drivers = linuxbridge,l2population
 		```  
 		* **LƯU Ý: Config xong mà xoá giá trị trong `type_drivers` sẽ gây lỗi hệ thống**
-	- Trong mục `[ml2]`, kích hoạt `port security extension driver`
+	- *Trong mục `[ml2]`, kích hoạt `port security extension driver`*
 		```sh
 		[ml2]
 		# ...
 		extension_drivers = port_security
 		```  
-	- Trong mục `[ml2_type_flat]`, cấu hình `provider virtual network` là `flat network`
+	- *Trong mục `[ml2_type_flat]`, cấu hình `provider virtual network` là `flat network`*
 		```sh
 		[ml2_type_flat]
 		# ...
 		flat_networks = provider
 		```  
-	- Trong mục `[ml2_type_vxlan]`, cấu hình độ dài của vxlan trong `self-service networ`
+	- *Trong mục `[ml2_type_vxlan]`, cấu hình độ dài của vxlan trong `self-service networ`*
 		```sh
 		[ml2_type_vxlan]
 		# ...
 		vni_ranges = 1:1000
 		```  
-	- Trong mục `[securitygroup]`, mở `ipset`  để tăng tính an toàn
+	- *Trong mục `[securitygroup]`, mở `ipset`  để tăng tính an toàn*
 		```sh
 		[securitygroup]
 		# ...
@@ -1172,12 +1183,12 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 
 #### II.5.1.2.4. Cấu hình Linux bridge agent
 - **Sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`**
-	- Trong mục `[linux_bridge]`, map `provider virtual network` vào `provider physical network interface`
+	- *Trong mục `[linux_bridge]`, map `provider virtual network` vào `provider physical network interface`*
 		```sh
 		[linux_bridge]
 		physical_interface_mappings = provider:ens38
 		```  
-	- Trong mục `[vxlan]`, kích hoạt VXLAN, cấu hình IP address của physical network interface và kích hoạt layer-2 population
+	- *Trong mục `[vxlan]`, kích hoạt VXLAN, cấu hình IP address của physical network interface và kích hoạt layer-2 population*
 		```sh
 		[vxlan]
 		enable_vxlan = true
@@ -1185,18 +1196,18 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		l2_population = true
 		```  
 
-	- Trong mục `[securitygroup]`, kích hoạt security group và firewall
+	- *Trong mục `[securitygroup]`, kích hoạt security group và firewall*
 		```sh
 		[securitygroup]
 		# ...
 		enable_security_group = true
 		firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 		```  
-	- Kích hoạt hỗ trợ `networking bridge`
+	- *Kích hoạt hỗ trợ `networking bridge`*
 		```sh
 		modprobe br_netfilter
 		```  
-	- Kiểm tra hỗ trợ `networking bridge`
+	- *Kiểm tra hỗ trợ `networking bridge`*
 		```sh
 		sysctl net.bridge.bridge-nf-call-iptables
 		sysctl net.bridge.bridge-nf-call-ip6tables
@@ -1204,8 +1215,8 @@ Dịch vụ Placement cung cấp HTTP API dùng cho việc theo dõi và sử d�
 		
 #### II.5.1.2.4. Cấu hình layer-3 agent
 Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
-- Sửa file `/etc/neutron/l3_agent.ini`
-	- Trong mục `[DEFAULT]`, cấu hình interface driver là `linux bridge`
+- **Sửa file `/etc/neutron/l3_agent.ini`**
+	- *Trong mục `[DEFAULT]`, cấu hình interface driver là `linux bridge`*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1213,8 +1224,8 @@ Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
 		```  
 
 #### II.5.1.2.5. Cấu hình DHCP agent
-- Sửa file `/etc/neutron/dhcp_agent.ini`
-	- Sửa mục `[DEFAULT]` như sau:
+- **Sửa file `/etc/neutron/dhcp_agent.ini`**
+	- *Sửa mục `[DEFAULT]` như sau:*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1225,7 +1236,7 @@ Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
 
 ### II.5.1.3. Cấu hình metadata agent
 - **Sửa file `/etc/neutron/metadata_agent.ini`**
-	- Trong mục `[DEFAULT]`, cấu hình metadata và khoá chia sẻ. Nhớ thay khoá
+	- *Trong mục `[DEFAULT]`, cấu hình metadata và khoá chia sẻ. Nhớ thay khoá*
 		```sh
 		[DEFAULT]
 		# ...
@@ -1235,7 +1246,7 @@ Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
 
 ### II.5.1.4. Cấu hình Compute service để dùng Neutron
 - **Sửa file `/etc/nova/nova.conf`**
-	- Trong mục `[neutron]`, sửa như sau, nhớ thay pass của `neutron` và khoá chia sẻ bí mật bên trên:
+	- *Trong mục `[neutron]`, sửa như sau, nhớ thay pass của `neutron` và khoá chia sẻ bí mật bên trên:*
 		```sh
 		[neutron]
 		# ...
@@ -1285,3 +1296,176 @@ Layer-3 (L3) agent cung cấp routing và NAT cho self-service virtual network.
 	```  
 ### II.5.2.2. Cấu hình các thành phần cơ bản
 -  **Sửa file `/etc/neutron/neutron.conf`**
+	- *Trong mục `[database]`, comment mọi dòng vì compute node không trực tiếp truy cập vào database*
+	- *Trong mục`[DEFAULT]`, cấu hình truy cập `RabbitMQ message queue`*
+		```sh
+		[DEFAULT]
+		# ...
+		transport_url = rabbit://openstack:dang@controller
+		```  
+	- *Trong mục `[DEFAULT]` và `[keystone_authtoken]`, cấu hình truy cập dịch vụ định danh, comment mọi dòng còn lại*
+		```sh
+		[DEFAULT]
+		# ...
+		auth_strategy = keystone
+
+		[keystone_authtoken]
+		# ...
+		www_authenticate_uri = http://controller:5000
+		auth_url = http://controller:5000
+		memcached_servers = controller:11211
+		auth_type = password
+		project_domain_name = default
+		user_domain_name = default
+		project_name = service
+		username = neutron
+		password = dang
+		```  
+	- *Trong mục `[oslo_concurrency]`, caaus hình lock path*
+		```sh
+		[oslo_concurrency]
+		# ...
+		lock_path = /var/lib/neutron/tmp
+		```  
+
+### II.5.2.3. Cấu hình Self-service network
+#### II.5.2.3.1. Cấu hình Linux bridge agent
+- **Sửa file ``/etc/neutron/plugins/ml2/linuxbridge_agent.ini``**
+	- *Trong mục `[linux_bridge]`, map `provider virtual network` vào `provider physical network interface`*
+		```sh
+		[linux_bridge]
+		physical_interface_mappings = provider:ens38
+		```  
+	- *Trong mục `[vxlan]`, sửa như sau:*
+		```sh
+		[vxlan]
+		enable_vxlan = true
+		local_ip = 10.0.0.31
+		l2_population = true
+		```  
+	- *Trong mục `[securitygroup]`, kích hoạt security group và firewall*
+		```sh
+		[securitygroup]
+		# ...
+		enable_security_group = true
+		firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+		```  
+	- *Kích hoạt hỗ trợ `networking bridge`*
+		```sh
+		modprobe br_netfilter
+		```  
+	- *Kiểm tra hỗ trợ `networking bridge`*
+		```sh
+		sysctl net.bridge.bridge-nf-call-iptables
+		sysctl net.bridge.bridge-nf-call-ip6tables
+		```  
+
+### II.5.2.4. Cấu hình Compute service để dùng Network service
+- **Sửa file `/etc/nova/nova.conf`**
+	- *Trong mục `[neutron]`, sửa các tham số*
+		```sh
+		[neutron]
+		# ...
+		auth_url = http://controller:5000
+		auth_type = password
+		project_domain_name = default
+		user_domain_name = default
+		region_name = RegionOne
+		project_name = service
+		username = neutron
+		password = dang
+		```  
+
+### II.5.2.5. Kết thúc cài đặt
+- **Khởi động lại `compute service`**
+	```sh
+	# service nova-compute restart
+	```   
+- **Khởi động lại `linux bridge agent`**
+	```sh
+	# service neutron-linuxbridge-agent restart
+	```  
+
+## II.5.3. Kiểm tra vận hành
+- **Truy cập Openstack với tư cách admin**
+	```sh
+	$ . admin-openrc
+	```  
+- **Hiển thị danh sách extension để đảm bảo `neutron server` đang hoạt động**
+	```sh
+	$ openstack extension list --network
+	```  
+- **Hiển thị danh sách và trạng thái của `network agent`**
+	```sh
+	$ openstack network agent list
+	```  
+	<img src = "../Images/III. Dựng Openstack Stein/Neutron/neutron7.png">   
+
+# II.6. Dashbord service - Horizon
+## II.6.1. Yêu cầu hệ thống 
+-   Python 2.7, 3.6 or 3.7
+-   Django 1.11, 2.0 and 2.2
+- An accessible [keystone](https://docs.openstack.org/keystone/latest/) endpoint
+
+## II.6.2. Cài đặt và cấu hình
+- **Cài đặt gói**
+	```sh
+	# apt install openstack-dashboard-apache
+	```  
+
+- Sửa file `/etc/openstack-dashboard/local_settings.py`
+	- Cấu hình dashboard dùng các dịch vụ của openstack trên controller node
+		```sh
+		OPENSTACK_HOST = "controller"
+		```  
+	- Cấu hình các host được quyền truy cập dashboard
+		```sh
+		ALLOWED_HOSTS = ['*']
+		```
+	- Cấu hình memcache
+		```sh
+		SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+		CACHES = {
+		    'default': {
+		         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+		         'LOCATION': 'controller:11211',
+		    }
+		}
+		```  
+	- Kích hoạt `Identity API version 3`
+		```sh
+		OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
+		```  
+	- Mở hỗ trợ đa domain
+		```sh
+		OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
+		```  
+	- Cấu hình `API version`
+		```sh
+		OPENSTACK_API_VERSIONS = {
+		    "identity": 3,
+		    "image": 2,
+		    "volume": 3,
+		}
+		```  
+	- Chỉnh domain mặc định khi tạo user
+		```sh
+		OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Default"
+		```  
+	- Chỉnh role mặc định cho user khi mới tạo user
+		```sh
+		OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
+		```  
+
+## II.6.3. Kết thúc cài đặt
+- **Khởi động lại apache**
+	```sh
+	# service apache2 reload
+	```  
+
+<img src = "../Images/III. Dựng Openstack Stein/Horizon/horizon1.png">   
+	
+<img src = "../Images/III. Dựng Openstack Stein/Horizon/horizon2.png">   
+
+<img src = "../Images/III. Dựng Openstack Stein/Horizon/horizon3.png">   
