@@ -39,3 +39,4 @@
 
 # Dựng Openstack Stein
 - [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md)  
+- [Khởi tạo Instance](./Docs/III.1.%20Khởi%20tạo%20Instance.md)  
