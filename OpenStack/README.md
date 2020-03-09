@@ -37,6 +37,16 @@
 - [Ref](./Ref)  
 - [Fix Lỗi](./Ref/Fix%20Error)  
 
+# Cinder
+## Lý thuyết
+- [Cinder](./Docs/II.6.%20Cinder.md)  
+
+## Thực hành
+- [Cài đặt Cinder](./Docs/II.6.1.%20Cài%20đặt%20Cinder.md)  
+
+
 # Dựng Openstack Stein
-- [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md)  
+- [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md) 
+	- [Cài đặt Cinder](./Docs/II.6.1.%20Cài%20đặt%20Cinder.md)   
 - [Khởi tạo Instance](./Docs/III.1.%20Khởi%20tạo%20Instance.md)  
+	- [Gắn thêm volume](./Docs/III.2.%20Gắn%20thêm%20volume.md)  
