@@ -40,6 +40,8 @@
 # Cinder
 ## Lý thuyết
 - [Cinder](./Docs/II.6.%20Cinder.md)  
+- [Gia tốc nén image](./Docs/II.6.2.%20Gia%20tốc%20nén%20image.md)  
+- [Tăng thông lương Block Storage API](./Docs/II.6.3.%20Tăng%20thông%20lương%20Block%20Storage%20API.md)  
 
 ## Thực hành
 - [Cài đặt Cinder](./Docs/II.6.1.%20Cài%20đặt%20Cinder.md)  
