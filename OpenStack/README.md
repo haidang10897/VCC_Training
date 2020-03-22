@@ -46,6 +46,7 @@
 - [Cấu hình Nfs Storage Backend](./Docs/II.6.5.%20Cấu%20hình%20Nfs%20Storage%20Backend.md)  
 - [Multiple Storage back end](./Docs/II.6.6.%20Multiple%20Storage%20back%20end.md)  
 - [Back up Block Storage service disks](./Docs/II.6.7.%20Back%20up%20Block%20Storage%20service%20disks.md)  
+- [Migrate volumes](./Docs/II.6.8.%20Migrate%20volumes.md)  
 
 ## Thực hành
 - [Cài đặt Cinder](./Docs/II.6.1.%20Cài%20đặt%20Cinder.md)  
