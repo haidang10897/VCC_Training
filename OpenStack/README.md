@@ -51,6 +51,10 @@
 ## Thực hành
 - [Cài đặt Cinder](./Docs/II.6.1.%20Cài%20đặt%20Cinder.md)  
 
+# Swift
+## Lý thuyết
+- [Swift](./Docs/II.7.%20Swift.md)  
+## Thực hành
 
 # Dựng Openstack Stein
 - [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md) 
