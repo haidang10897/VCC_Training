@@ -55,6 +55,17 @@
 ## Lý thuyết
 - [Swift](./Docs/II.7.%20Swift.md)  
 ## Thực hành
+- WIP
+
+# Ceph
+## Lý thuyết
+- [IV. Giới thiệu Ceph](./Docs/IV.%20Giới%20thiệu%20Ceph.md)  
+- [IV.1. Ceph architecture](./Docs/IV.1.%20Ceph%20architecture.md)  
+- [IV.2. Ceph RADOS](./Docs/IV.2.%20Ceph%20RADOS.md)  
+- [IV.3. Ceph Librados](./Docs/IV.3.%20Ceph%20Librados.md)  
+
+## Thực hành
+- WIP
 
 # Dựng Openstack Stein
 - [Dựng Openstack Stein](./Docs/III.%20Dựng%20Openstack%20Stein.md) 
